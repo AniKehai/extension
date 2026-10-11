@@ -23,8 +23,8 @@
 		"postinstall": "wxt prepare"
 	},
 	"dependencies": {
-		"lucide-react": "^1.52.0",
-		"motion": "^14.0.0",
+		"lucide-react": "^1.55.0",
+		"motion": "^14.1.0",
 		"react": "^19.3.0",
 		"react-dom": "^19.3.0"
 	},
@@ -36,10 +36,10 @@
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",
 		"@wxt-dev/module-react": "^1.2.2",
-		"lefthook": "^2.1.16",
+		"lefthook": "^2.2.1",
 		"tailwindcss": "^4.3.3",
 		"typescript": "^7.0.2",
-		"vite": "^8.3.2",
+		"vite": "^8.3.4",
 		"web-ext": "^10.7.0",
 		"wxt": "^0.21.4"
 	}
