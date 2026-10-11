@@ -10,7 +10,7 @@ A lightweight, purely standalone browser extension that natively broadcasts the 
 
 ![Stars](https://img.shields.io/github/stars/minkxx/anime-discord-rpc?style=flat)
 ![Forks](https://img.shields.io/github/forks/minkxx/anime-discord-rpc?style=flat)
-![Version](https://img.shields.io/badge/version-v2.4.0-blue?style=flat&labelColor=#808080)
+![Version](https://img.shields.io/badge/version-v2.5.0-blue?style=flat&labelColor=#808080)
 
 <!-- DOWNLOADS:START -->
 ![GitHub Downloads](https://img.shields.io/badge/github_downloads-176-blue?style=flat&labelColor=555555)
@@ -32,7 +32,7 @@ It's super easy! Just go to the [Firefox Add-ons Store](https://addons.mozilla.o
 **If you use Chrome (Desktop):**
 We aren't in the Chrome Web Store just yet, so follow these simple steps:
 
-1. Go to the [Releases page](https://github.com/minkxx/anime-discord-rpc/releases) and download `anime-rpc-extension-2.4.0-chrome.zip`.
+1. Go to the [Releases page](https://github.com/minkxx/anime-discord-rpc/releases) and download `anime-rpc-extension-2.5.0-chrome.zip`.
 2. **Extract (unzip)** that file into a regular folder on your computer.
 3. Open Google Chrome and type `chrome://extensions` into the top web address bar and press Enter.
 4. Look at the top-right corner of the screen and turn **ON** the switch for **Developer mode**.
@@ -43,7 +43,7 @@ We aren't in the Chrome Web Store just yet, so follow these simple steps:
 You can use this extension on the go by using an Android browser that supports Chrome extensions, such as Kiwi Browser or Lemur Browser.
 
 1. Install [Kiwi Browser](https://github.com/kiwibrowser/src.next/releases/tag/14310011181) from the official github release.
-2. Go to the [Releases page](https://github.com/minkxx/anime-discord-rpc/releases) and download `anime-rpc-extension-2.4.0-chrome.zip` to your phone.
+2. Go to the [Releases page](https://github.com/minkxx/anime-discord-rpc/releases) and download `anime-rpc-extension-2.5.0-chrome.zip` to your phone.
 3. Open Kiwi Browser, tap the three dots menu (⋮) in the top right, and select **Extensions**.
 4. Enable **Developer mode** using the toggle at the top right.
 5. Tap the **+ (from .zip/.crx/.user.js)** button and select the downloaded `.zip` file from your device storage.
@@ -81,6 +81,8 @@ We currently support scraping metadata and video progress from the following sit
 * **HiAnime**
 * **Aniwatch**
 * **ReAnime**
+* **Miruro**
+* **KissAssAnime (kaa.lt)**
 
 *Don't see your favorite site? See the [Contributing](./.github/CONTRIBUTING.md) section to learn how to add it!*
 
