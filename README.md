@@ -1,4 +1,4 @@
-# Anime Discord RPC
+# AniKehai
 
 <div align="center">
     <img src="./.github/assets/discord-activity.png" width="400" height="auto" alt="discord-activity">
@@ -8,8 +8,8 @@ A lightweight, purely standalone browser extension that natively broadcasts the 
 
 <div align="center">
 
-![Stars](https://img.shields.io/github/stars/minkxx/anime-discord-rpc?style=flat)
-![Forks](https://img.shields.io/github/forks/minkxx/anime-discord-rpc?style=flat)
+![Stars](https://img.shields.io/github/stars/minkxx/AniKehai?style=flat)
+![Forks](https://img.shields.io/github/forks/minkxx/AniKehai?style=flat)
 ![Version](https://img.shields.io/badge/version-v2.5.0-blue?style=flat&labelColor=#808080)
 
 <!-- DOWNLOADS:START -->
@@ -24,15 +24,15 @@ A lightweight, purely standalone browser extension that natively broadcasts the 
 
 ## How to use
 
-Anime Discord RPC can be easily used by simply installing the extension and linking your Discord account.
+AniKehai can be easily used by simply installing the extension and linking your Discord account.
 
 **If you use Firefox (Desktop & Android):**
-It's super easy! Just go to the [Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/anikoto-discord-rpc/) and click **"Add to Firefox"**.
+It's super easy! Just go to the [Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/anikehai/) and click **"Add to Firefox"**.
 
 **If you use Chrome (Desktop):**
 We aren't in the Chrome Web Store just yet, so follow these simple steps:
 
-1. Go to the [Releases page](https://github.com/minkxx/anime-discord-rpc/releases) and download `anime-rpc-extension-2.5.0-chrome.zip`.
+1. Go to the [Releases page](https://github.com/minkxx/AniKehai/releases) and download `anikehai-2.6.0-chrome.zip`.
 2. **Extract (unzip)** that file into a regular folder on your computer.
 3. Open Google Chrome and type `chrome://extensions` into the top web address bar and press Enter.
 4. Look at the top-right corner of the screen and turn **ON** the switch for **Developer mode**.
@@ -43,7 +43,7 @@ We aren't in the Chrome Web Store just yet, so follow these simple steps:
 You can use this extension on the go by using an Android browser that supports Chrome extensions, such as Kiwi Browser or Lemur Browser.
 
 1. Install [Kiwi Browser](https://github.com/kiwibrowser/src.next/releases/tag/14310011181) from the official github release.
-2. Go to the [Releases page](https://github.com/minkxx/anime-discord-rpc/releases) and download `anime-rpc-extension-2.5.0-chrome.zip` to your phone.
+2. Go to the [Releases page](https://github.com/minkxx/AniKehai/releases) and download `anikehai-2.6.0-chrome.zip` to your phone.
 3. Open Kiwi Browser, tap the three dots menu (⋮) in the top right, and select **Extensions**.
 4. Enable **Developer mode** using the toggle at the top right.
 5. Tap the **+ (from .zip/.crx/.user.js)** button and select the downloaded `.zip` file from your device storage.
@@ -57,7 +57,7 @@ You can use this extension on the go by using an Android browser that supports C
 
 ## v2 - The Native Update
 
-Anime Discord RPC has been completely rebuilt from the ground up! **Version 2 is now a standalone browser extension built with [WXT](https://wxt.dev/)**. 
+AniKehai has been completely rebuilt from the ground up! **Version 2 is now a standalone browser extension built with [WXT](https://wxt.dev/)**. 
 
 * **No More Desktop App:** We have completely removed the Electron desktop middleware. 
 * **Native WebSockets:** The extension now authenticates via Discord OAuth2 and connects directly to Discord's Gateway via WebSockets natively right from your browser background worker. 
