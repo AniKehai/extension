@@ -1,6 +1,6 @@
-# Contributing to Anime Discord RPC
+# Contributing to AniKehai
 
-First off, thank you for considering contributing to Anime Discord RPC!
+First off, thank you for considering contributing to AniKehai!
 
 Contributions are the heart of the open-source community. Whether you are reporting bugs, requesting support for new streaming sites, or submitting code changes, your help is greatly appreciated.
 
@@ -18,7 +18,7 @@ We use GitHub issues to track feature requests and bugs. Before opening a new is
 
 ## Local Development Setup
 
-Anime Discord RPC is a purely standalone browser extension built with **WXT**. The extension connects directly to Discord's Gateway via WebSockets natively right from the browser background worker.
+AniKehai is a purely standalone browser extension built with **WXT**. The extension connects directly to Discord's Gateway via WebSockets natively right from the browser background worker.
 
 ### Prerequisites
 

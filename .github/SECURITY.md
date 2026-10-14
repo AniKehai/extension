@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-We currently provide security updates and patches for the following versions of the Anime RPC extension:
+We currently provide security updates and patches for the following versions of the AniKehai extension:
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -11,7 +11,7 @@ We currently provide security updates and patches for the following versions of 
 
 ## Reporting a Vulnerability
 
-We take the security of Anime RPC and our users' Discord accounts seriously. 
+We take the security of AniKehai and our users' Discord accounts seriously. 
 
 If you discover a security vulnerability in this project, **please do not report it by creating a public GitHub issue.** Instead, please use GitHub's Private Vulnerability Reporting (PVR) feature. This provides a secure, private channel to reach the maintainers.
 
@@ -26,7 +26,7 @@ You can expect an initial acknowledgment of your report within 48 to 72 hours. W
 
 To help security researchers understand our boundaries, below is our expected threat model. 
 
-Anime RPC operates as a browser extension that interacts with potentially untrusted third-party streaming sites (`*.anikototv.to`, `*.animepahe.pw`, etc.) while holding a sensitive Discord OAuth2 access token in local storage.
+AniKehai operates as a browser extension that interacts with potentially untrusted third-party streaming sites (`*.anikototv.to`, `*.animepahe.pw`, etc.) while holding a sensitive Discord OAuth2 access token in local storage.
 
 ### In-Scope for Bug Bounties / Security Reports
 * **Token Theft:** Any vector that allows a malicious host web page or content script to extract the user's `discord_token` or `mobile_oauth_verifier` from `browser.storage.local`.
