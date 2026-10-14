@@ -27,7 +27,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          FIREFOX_ADDON_SLUG: anikoto-discord-rpc
+          FIREFOX_ADDON_SLUG: anikehai
         run: bun scripts/count_downloads.ts
 
       - name: Commit changes
