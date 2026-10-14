@@ -29,15 +29,15 @@ export function AuthGateModal({
 			>
 				<img
 					src="/icon/96.png"
-					alt="Anime RPC Logo"
+					alt="AniKehai Logo"
 					className="mx-auto h-12 w-12 drop-shadow-[0_0_12px_rgba(34,211,238,0.25)]"
 				/>
 
 				<h2 className="mt-4 text-center text-[15px] font-bold text-ink">
-					Anime RPC
+					AniKehai
 				</h2>
 				<p className="mt-1.5 text-center text-[12px] leading-relaxed text-muted">
-					Link your Discord account so Anime RPC can broadcast what you're
+					Link your Discord account so AniKehai can broadcast what you're
 					watching.
 				</p>
 

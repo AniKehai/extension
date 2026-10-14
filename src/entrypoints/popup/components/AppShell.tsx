@@ -64,7 +64,7 @@ export function AppShell({ status }: AppShellProps) {
 			</div>
 
 			<div className="mt-auto pt-6 text-center text-[10.5px] text-muted/70">
-				Anime RPC · v{EXTENSION_VERSION}
+				AniKehai · v{EXTENSION_VERSION}
 			</div>
 		</div>
 	);

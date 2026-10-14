@@ -14,7 +14,7 @@ export function Header({ state, view, onToggleSettings }: HeaderProps) {
 		<header className="flex items-center justify-between px-5 pt-5">
 			<div className="flex items-baseline gap-2">
 				<span className="text-[15px] font-extrabold tracking-tight text-ink">
-					Anime RPC
+					AniKehai
 				</span>
 			</div>
 
