@@ -17,7 +17,7 @@ if (typeof browser !== "undefined" && browser.storage) {
 			isEnabled = value;
 			browser.storage.local.set({ enable_logs: value });
 			console.log(
-				`%c[Anime RPC] Developer logging ${value ? "ENABLED" : "DISABLED"}`,
+				`%c[AniKehai] Developer logging ${value ? "ENABLED" : "DISABLED"}`,
 				"color: #22d3ee; font-weight: bold;",
 			);
 		},

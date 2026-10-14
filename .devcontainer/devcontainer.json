@@ -1,5 +1,5 @@
 {
-	"name": "Anime Discord RPC (Bun)",
+	"name": "AniKehai (Bun)",
 	"image": "oven/bun:latest",
 	"customizations": {
 		"vscode": {
