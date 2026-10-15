@@ -4,13 +4,14 @@
     <img src="./.github/assets/discord-activity.png" width="400" height="auto" alt="discord-activity">
 </div>
 
-A lightweight, purely standalone browser extension that natively broadcasts the anime you are watching directly to your Discord Rich Presence. 
+A lightweight, purely standalone browser extension that natively broadcasts the anime you are watching directly to your Discord Rich Presence.
 
 <div align="center">
 
+[![Website](https://img.shields.io/badge/website-anikehai.vercel.app-7c5cff?style=flat&logo=vercel)](https://anikehai.vercel.app/)
 ![Stars](https://img.shields.io/github/stars/minkxx/AniKehai?style=flat)
 ![Forks](https://img.shields.io/github/forks/minkxx/AniKehai?style=flat)
-![Version](https://img.shields.io/badge/version-v2.5.0-blue?style=flat&labelColor=#808080)
+![Version](https://img.shields.io/badge/version-v2.6.0-blue?style=flat&labelColor=#808080)
 
 <!-- DOWNLOADS:START -->
 ![GitHub Downloads](https://img.shields.io/badge/github_downloads-188-blue?style=flat&labelColor=555555)
@@ -22,9 +23,13 @@ A lightweight, purely standalone browser extension that natively broadcasts the 
 
 </div>
 
+🌐 **Official Website:** Visit [anikehai.vercel.app](https://anikehai.vercel.app/) for automatic browser detection, step-by-step install guides, full supported site details, and FAQ.
+
+---
+
 ## How to use
 
-AniKehai can be easily used by simply installing the extension and linking your Discord account.
+AniKehai can be easily used by simply installing the extension and linking your Discord account. You can visit the [official website](https://anikehai.vercel.app/) for an automated install guide tailored to your browser, or follow the manual steps below:
 
 **If you use Firefox (Desktop & Android):**
 It's super easy! Just go to the [Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/anikehai/) and click **"Add to Firefox"**.
@@ -57,10 +62,10 @@ You can use this extension on the go by using an Android browser that supports C
 
 ## v2 - The Native Update
 
-AniKehai has been completely rebuilt from the ground up! **Version 2 is now a standalone browser extension built with [WXT](https://wxt.dev/)**. 
+AniKehai has been completely rebuilt from the ground up! **Version 2 is now a standalone browser extension built with [WXT](https://wxt.dev/)**.
 
-* **No More Desktop App:** We have completely removed the Electron desktop middleware. 
-* **Native WebSockets:** The extension now authenticates via Discord OAuth2 and connects directly to Discord's Gateway via WebSockets natively right from your browser background worker. 
+* **No More Desktop App:** We have completely removed the Electron desktop middleware.
+* **Native WebSockets:** The extension now authenticates via Discord OAuth2 and connects directly to Discord's Gateway via WebSockets natively right from your browser background worker.
 * **Better UI:** Features a sleek new React-based popup built with Tailwind CSS and Framer Motion.
 
 ## Features
@@ -74,17 +79,7 @@ AniKehai has been completely rebuilt from the ground up! **Version 2 is now a st
 
 ## Supported Sites
 
-We currently support scraping metadata and video progress from the following sites and their associated video iframes:
-* **Anikoto**
-* **Aniwave**
-* **AnimePahe**
-* **HiAnime**
-* **Aniwatch**
-* **ReAnime**
-* **Miruro**
-* **KissAssAnime (kaa.lt)**
-
-*Don't see your favorite site? See the [Contributing](./.github/CONTRIBUTING.md) section to learn how to add it!*
+[Supported sites list](https://anikehai.vercel.app/#sites)
 
 ## Contributing
 
