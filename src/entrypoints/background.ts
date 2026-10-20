@@ -145,6 +145,12 @@ export default defineBackground(() => {
 			if (message.type === "SET_PRIVACY_ENABLED") {
 				setPrivacyEnabledFlag(!!message.enabled);
 				await browser.storage.local.set({ privacy_enabled: privacyEnabled });
+
+				if (!activityEnabled) {
+					sendResponse({ success: true });
+					return;
+				}
+
 				if (currentAnimeState.title !== "Unknown") {
 					if (privacyEnabled) {
 						gateway
