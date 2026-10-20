@@ -1,4 +1,4 @@
-export const EXTENSION_VERSION = "2.6.2";
+export const EXTENSION_VERSION = "2.6.3";
 export const DISCORD_SERVER_URL = "https://discord.gg/w9Q7YUrzpn";
 
 export const APPLICATION_ID = "1526911509878538340";
