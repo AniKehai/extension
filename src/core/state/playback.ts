@@ -11,6 +11,7 @@ export const currentAnimeState = {
 let lastBroadcast = {
 	title: "",
 	episode: "",
+	coverUrl: "",
 	episodeName: "",
 	isPaused: false,
 	estimatedStart: 0,
@@ -40,6 +41,7 @@ export function clearAnimeState() {
 	lastBroadcast = {
 		title: "",
 		episode: "",
+		coverUrl: "",
 		episodeName: "",
 		isPaused: false,
 		estimatedStart: 0,
@@ -59,7 +61,8 @@ export function evaluateDiscordUpdate(
 
 	const hasInfoChanged =
 		currentAnimeState.title !== lastBroadcast.title ||
-		currentAnimeState.episode !== lastBroadcast.episode;
+		currentAnimeState.episode !== lastBroadcast.episode ||
+		currentAnimeState.coverUrl !== lastBroadcast.coverUrl;
 
 	const hasStateChanged = currentAnimeState.isPaused !== lastBroadcast.isPaused;
 
@@ -81,6 +84,7 @@ export function commitBroadcast(estimatedStart: number) {
 	lastBroadcast = {
 		title: currentAnimeState.title,
 		episode: currentAnimeState.episode,
+		coverUrl: currentAnimeState.coverUrl,
 		episodeName: currentAnimeState.episodeName,
 		isPaused: currentAnimeState.isPaused,
 		estimatedStart,
