@@ -41,7 +41,8 @@ export class DiscordGateway {
 			typeof storage.discord_token === "string" ? storage.discord_token : null;
 		const expiresAt = storage.discord_token_expires_at as number | undefined;
 
-		if (token && expiresAt && Date.now() >= expiresAt - 300000) {
+		const expiringSoon = !!expiresAt && Date.now() >= expiresAt - 300000;
+		if (!token || expiringSoon) {
 			token = await refreshDiscordToken();
 		}
 
@@ -125,12 +126,8 @@ export class DiscordGateway {
 				if (newToken) {
 					this.connect();
 				} else {
-					logger.error("[Gateway] Refresh failed. Clearing token.");
-					browser.storage.local.remove([
-						"discord_token",
-						"discord_refresh_token",
-						"discord_token_expires_at",
-					]);
+					logger.error("[Gateway] Refresh failed. Clearing access token.");
+					browser.storage.local.remove("discord_token");
 				}
 				return;
 			}

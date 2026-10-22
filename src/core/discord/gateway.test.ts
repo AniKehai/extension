@@ -315,6 +315,40 @@ describe("disconnect handling", () => {
 		expect(FakeWebSocket.instances).toHaveLength(1);
 	});
 
+	it("close code 4004 with a failed (transient) refresh keeps the refresh token", async () => {
+		await browser.storage.local.set({ discord_refresh_token: "r1" });
+		vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
+		await connectAndReady();
+		FakeWebSocket.last.serverClose(4004);
+		await vi.advanceTimersByTimeAsync(10);
+
+		const stored = await browser.storage.local.get([
+			"discord_token",
+			"discord_refresh_token",
+		]);
+		expect(stored.discord_token).toBeUndefined();
+		expect(stored.discord_refresh_token).toBe("r1");
+	});
+
+	it("connect() refreshes when only a refresh token is left", async () => {
+		await browser.storage.local.remove("discord_token");
+		await browser.storage.local.set({ discord_refresh_token: "r1" });
+		vi.stubGlobal(
+			"fetch",
+			vi.fn().mockResolvedValue({
+				json: async () => ({
+					access_token: "fresh",
+					refresh_token: "r2",
+					expires_in: 3600,
+				}),
+			}),
+		);
+		const ws = await connectAndReady();
+		expect(ws.sentPayloads.find((p) => p.op === 2)?.d.token).toBe(
+			"Bearer fresh",
+		);
+	});
+
 	it("op 9 (invalid session): disconnects and clears the token", async () => {
 		const ws = await connectAndReady();
 		ws.serverSend({ op: 9, d: false });
