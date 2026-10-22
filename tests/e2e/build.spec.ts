@@ -41,7 +41,7 @@ test.describe("chrome-mv3 build output", () => {
 		);
 
 		for (const p of permissions) {
-			expect(["identity", "storage", "tabs"]).toContain(p);
+			expect(["identity", "storage", "tabs", "scripting"]).toContain(p);
 		}
 	});
 
