@@ -1,6 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { APPLICATION_ID } from "../../shared/constants";
-import { loginWithDiscord, processLocalhostRedirect } from "./auth";
+import {
+	loginWithDiscord,
+	processLocalhostRedirect,
+	refreshDiscordToken,
+} from "./auth";
 
 const REDIRECT = "https://abc.chromiumapp.org/";
 const MOBILE_REDIRECT = "http://127.0.0.1/discord-auth";
@@ -273,5 +277,135 @@ describe("processLocalhostRedirect (mobile callback)", () => {
 		const result = await processLocalhostRedirect("not a url");
 		expect(result.success).toBe(false);
 		expect(result.error).toBeTruthy();
+	});
+});
+
+describe("refreshDiscordToken", () => {
+	const get = (key: string) =>
+		browser.storage.local.get(key).then((r) => r[key]);
+
+	const seed = () =>
+		browser.storage.local.set({
+			discord_token: "old_access",
+			discord_refresh_token: "old_refresh",
+			discord_token_expires_at: 1,
+		});
+
+	beforeEach(seed);
+
+	it("returns null without calling Discord when there is no refresh token", async () => {
+		await browser.storage.local.remove("discord_refresh_token");
+		await expect(refreshDiscordToken()).resolves.toBeNull();
+		expect(fetchMock).not.toHaveBeenCalled();
+	});
+
+	it("stores the rotated tokens and returns the new access token", async () => {
+		fetchMock.mockResolvedValue(
+			tokenResponse({
+				access_token: "new_access",
+				refresh_token: "new_refresh",
+				expires_in: 3600,
+			}),
+		);
+		await expect(refreshDiscordToken()).resolves.toBe("new_access");
+		expect(await get("discord_token")).toBe("new_access");
+		expect(await get("discord_refresh_token")).toBe("new_refresh");
+		expect(await get("discord_token_expires_at")).toBeGreaterThan(Date.now());
+
+		const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+		const body = new URLSearchParams(init.body as string);
+		expect(body.get("grant_type")).toBe("refresh_token");
+		expect(body.get("refresh_token")).toBe("old_refresh");
+	});
+
+	it("keeps the old refresh token if Discord doesn't rotate it", async () => {
+		fetchMock.mockResolvedValue(
+			tokenResponse({ access_token: "new_access", expires_in: 3600 }),
+		);
+		await refreshDiscordToken();
+		expect(await get("discord_refresh_token")).toBe("old_refresh");
+	});
+
+	it("shares one in-flight request between concurrent callers", async () => {
+		let resolveFetch: (v: unknown) => void = () => {};
+		fetchMock.mockReturnValue(
+			new Promise((resolve) => {
+				resolveFetch = resolve;
+			}),
+		);
+
+		const a = refreshDiscordToken();
+		const b = refreshDiscordToken();
+		await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+
+		resolveFetch(
+			tokenResponse({
+				access_token: "shared",
+				refresh_token: "r2",
+				expires_in: 3600,
+			}),
+		);
+		await expect(Promise.all([a, b])).resolves.toEqual(["shared", "shared"]);
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+	});
+
+	it("starts a new request once the previous one has settled", async () => {
+		fetchMock.mockResolvedValue(
+			tokenResponse({
+				access_token: "t",
+				refresh_token: "r",
+				expires_in: 3600,
+			}),
+		);
+		await refreshDiscordToken();
+		await refreshDiscordToken();
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+	});
+
+	it("clears all tokens when Discord answers invalid_grant", async () => {
+		fetchMock.mockResolvedValue(tokenResponse({ error: "invalid_grant" }));
+		await expect(refreshDiscordToken()).resolves.toBeNull();
+		expect(await get("discord_token")).toBeUndefined();
+		expect(await get("discord_refresh_token")).toBeUndefined();
+		expect(await get("discord_token_expires_at")).toBeUndefined();
+	});
+
+	it.each([
+		[
+			"a rate limit",
+			{ message: "You are being rate limited.", retry_after: 1 },
+		],
+		["a server error", { error: "server_error" }],
+		["an empty body", {}],
+	])("keeps tokens on %s (transient failure)", async (_label, body) => {
+		fetchMock.mockResolvedValue(tokenResponse(body));
+		await expect(refreshDiscordToken()).resolves.toBeNull();
+		expect(await get("discord_token")).toBe("old_access");
+		expect(await get("discord_refresh_token")).toBe("old_refresh");
+	});
+
+	it("keeps tokens when the request fails at the network level", async () => {
+		fetchMock.mockRejectedValue(new Error("offline"));
+		await expect(refreshDiscordToken()).resolves.toBeNull();
+		expect(await get("discord_refresh_token")).toBe("old_refresh");
+	});
+
+	it("keeps tokens when the response isn't JSON", async () => {
+		fetchMock.mockResolvedValue({
+			json: async () => {
+				throw new SyntaxError("Unexpected token <");
+			},
+		});
+		await expect(refreshDiscordToken()).resolves.toBeNull();
+		expect(await get("discord_refresh_token")).toBe("old_refresh");
+	});
+
+	it("does not stay stuck after a failed request", async () => {
+		fetchMock.mockRejectedValueOnce(new Error("offline"));
+		await refreshDiscordToken();
+		fetchMock.mockResolvedValue(
+			tokenResponse({ access_token: "t", refresh_token: "r", expires_in: 60 }),
+		);
+		await expect(refreshDiscordToken()).resolves.toBe("t");
 	});
 });

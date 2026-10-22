@@ -100,14 +100,32 @@ async function exchangeCodeForToken(
 	throw new Error("Failed to exchange code for token.");
 }
 
-export async function refreshDiscordToken(): Promise<string | null> {
+const TOKEN_KEYS = [
+	"discord_token",
+	"discord_refresh_token",
+	"discord_token_expires_at",
+];
+
+let inFlightRefresh: Promise<string | null> | null = null;
+
+export function refreshDiscordToken(): Promise<string | null> {
+	if (!inFlightRefresh) {
+		inFlightRefresh = performRefresh().finally(() => {
+			inFlightRefresh = null;
+		});
+	}
+	return inFlightRefresh;
+}
+
+async function performRefresh(): Promise<string | null> {
 	const storage = await browser.storage.local.get("discord_refresh_token");
-	if (!storage.discord_refresh_token) return null;
+	const refreshToken = storage.discord_refresh_token;
+	if (typeof refreshToken !== "string" || !refreshToken) return null;
 
 	const body = new URLSearchParams({
 		client_id: APPLICATION_ID,
 		grant_type: "refresh_token",
-		refresh_token: storage.discord_refresh_token as string,
+		refresh_token: refreshToken,
 	});
 
 	try {
@@ -122,17 +140,18 @@ export async function refreshDiscordToken(): Promise<string | null> {
 			const expiresAt = Date.now() + data.expires_in * 1000;
 			await browser.storage.local.set({
 				discord_token: data.access_token,
-				discord_refresh_token: data.refresh_token,
+				discord_refresh_token: data.refresh_token ?? refreshToken,
 				discord_token_expires_at: expiresAt,
 			});
 			return data.access_token;
 		}
 
-		await browser.storage.local.remove([
-			"discord_token",
-			"discord_refresh_token",
-			"discord_token_expires_at",
-		]);
+		if (data.error === "invalid_grant") {
+			logger.error("Token Refresh: refresh token rejected. Clearing tokens.");
+			await browser.storage.local.remove(TOKEN_KEYS);
+		} else {
+			logger.error("Token Refresh failed (tokens kept):", res.status, data);
+		}
 		return null;
 	} catch (error) {
 		logger.error("Token Refresh Error:", error);
