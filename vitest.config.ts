@@ -6,7 +6,7 @@ export default defineConfig({
 	test: {
 		environment: "happy-dom",
 		setupFiles: ["./tests/setup.ts"],
-		include: ["src/**/*.test.{ts,tsx}", "tests/**/*.test.{ts,tsx}"],
+		include: ["tests/**/*.test.{ts,tsx}"],
 		exclude: ["node_modules", ".output", ".wxt", "tests/e2e/**"],
 		restoreMocks: true,
 		unstubGlobals: true,
@@ -16,7 +16,6 @@ export default defineConfig({
 			provider: "v8",
 			include: ["src/**/*.{ts,tsx}"],
 			exclude: [
-				"src/**/*.test.{ts,tsx}",
 				"src/entrypoints/popup/main.tsx",
 				"src/entrypoints/popup/style.css",
 				"src/shared/types.ts",
