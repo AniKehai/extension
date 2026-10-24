@@ -5,7 +5,7 @@ async function loadLogger(initialEnabled?: boolean) {
 		await browser.storage.local.set({ enable_logs: initialEnabled });
 	}
 	vi.resetModules();
-	const mod = await import("./logger");
+	const mod = await import("../../src/shared/logger");
 
 	await new Promise((r) => setTimeout(r, 0));
 	return mod.logger;

@@ -4,7 +4,7 @@ import {
 	CHECK_ACTIVITY_INTERVAL,
 	DISCORD_SERVER_URL,
 	RESET_ACTIVITY_TIMEOUT,
-} from "./constants";
+} from "../../src/shared/constants";
 
 describe("constants", () => {
 	it("APPLICATION_ID is a Discord snowflake", () => {

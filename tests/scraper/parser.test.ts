@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { mockVideo, setBody } from "../../tests/helpers/dom";
-import { getStandardVideoStats, parseTimeText } from "./parser";
+import { getStandardVideoStats, parseTimeText } from "../../src/scraper/parser";
+import { mockVideo, setBody } from "../helpers/dom";
 
 describe("parseTimeText", () => {
 	it.each([

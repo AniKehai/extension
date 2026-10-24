@@ -1,10 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { FakeWebSocket } from "../../../tests/helpers/fake-websocket";
-import { APPLICATION_ID } from "../../shared/constants";
-import { getAppAssetId, getLargeImageKey } from "./assets";
-import { DiscordGateway } from "./gateway";
+import {
+	getAppAssetId,
+	getLargeImageKey,
+} from "../../../src/core/discord/assets";
+import { DiscordGateway } from "../../../src/core/discord/gateway";
+import { APPLICATION_ID } from "../../../src/shared/constants";
+import { FakeWebSocket } from "../../helpers/fake-websocket";
 
-vi.mock("./assets", () => ({
+vi.mock("../../../src/core/discord/assets", () => ({
 	getLargeImageKey: vi.fn(),
 	getAppAssetId: vi.fn(),
 }));

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchAnilistCover } from "./api";
+import { fetchAnilistCover } from "../../../src/core/anilist/api";
 
 const jsonResponse = (body: unknown) => ({ json: async () => body });
 

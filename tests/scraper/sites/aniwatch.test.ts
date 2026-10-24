@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { loadFixture, setBody } from "../../../tests/helpers/dom";
-import { aniwatchStrategy } from "./aniwatch";
+import { aniwatchStrategy } from "../../../src/scraper/sites/aniwatch";
+import { loadFixture, setBody } from "../../helpers/dom";
 
 describe("aniwatchStrategy", () => {
 	it("declares its domain and player iframes", () => {

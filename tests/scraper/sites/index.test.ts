@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { strategies } from "./index";
+import { strategies } from "../../../src/scraper/sites/index";
 
 const HOSTNAME = /^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$/i;
 

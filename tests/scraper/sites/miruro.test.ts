@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { loadFixture, setBody, visit } from "../../../tests/helpers/dom";
-import { miruroStrategy } from "./miruro";
+import { miruroStrategy } from "../../../src/scraper/sites/miruro";
+import { loadFixture, setBody, visit } from "../../helpers/dom";
 
 const NULLS = { title: null, episode: null, coverUrl: null };
 

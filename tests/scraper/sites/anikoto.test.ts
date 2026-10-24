@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { loadFixture, mockVideo, setBody } from "../../../tests/helpers/dom";
-import { anikotoStrategy } from "./anikoto";
+import { anikotoStrategy } from "../../../src/scraper/sites/anikoto";
+import { loadFixture, mockVideo, setBody } from "../../helpers/dom";
 
 describe("anikotoStrategy", () => {
 	it("declares its domains and player iframes", () => {

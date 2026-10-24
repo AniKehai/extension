@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { APPLICATION_ID } from "../../shared/constants";
 import {
 	loginWithDiscord,
 	processLocalhostRedirect,
 	refreshDiscordToken,
-} from "./auth";
+} from "../../../src/core/discord/auth";
+import { APPLICATION_ID } from "../../../src/shared/constants";
 
 const REDIRECT = "https://abc.chromiumapp.org/";
 const MOBILE_REDIRECT = "http://127.0.0.1/discord-auth";

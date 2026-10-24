@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { loadFixture, setBody, setHead } from "../../../tests/helpers/dom";
+import { loadFixture, setBody, setHead } from "../../helpers/dom";
 
-type Strategy = typeof import("./animepahe")["animepaheStrategy"];
+type Strategy =
+	typeof import("../../../src/scraper/sites/animepahe")["animepaheStrategy"];
 
 let strategy: Strategy;
 let sendMessage: ReturnType<typeof vi.fn>;
@@ -12,7 +13,9 @@ beforeEach(async () => {
 	vi.spyOn(browser.runtime, "sendMessage").mockImplementation(
 		sendMessage as never,
 	);
-	({ animepaheStrategy: strategy } = await import("./animepahe"));
+	({ animepaheStrategy: strategy } = await import(
+		"../../../src/scraper/sites/animepahe"
+	));
 });
 
 const page = (id = "154587") =>

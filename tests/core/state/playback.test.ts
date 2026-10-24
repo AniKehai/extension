@@ -8,7 +8,7 @@ import {
 	privacyEnabled,
 	setActivityEnabledFlag,
 	setPrivacyEnabledFlag,
-} from "./playback";
+} from "../../../src/core/state/playback";
 
 const NOW = 1_700_000_000_000;
 

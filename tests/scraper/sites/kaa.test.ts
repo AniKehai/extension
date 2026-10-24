@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { loadFixture, setBody, visit } from "../../../tests/helpers/dom";
+import { loadFixture, setBody, visit } from "../../helpers/dom";
 
-type Strategy = typeof import("./kaa")["kaaStrategy"];
+type Strategy = typeof import("../../../src/scraper/sites/kaa")["kaaStrategy"];
 let strategy: Strategy;
 
 beforeEach(async () => {
 	vi.resetModules();
-	({ kaaStrategy: strategy } = await import("./kaa"));
+	({ kaaStrategy: strategy } = await import("../../../src/scraper/sites/kaa"));
 });
 
 const TITLE = "KickAssAnime - Magical★Explorer - Episode 03 - English Dub";

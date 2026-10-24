@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { AnimeSite } from "../shared/types";
-import { extractMatches } from "./extractor";
-import { strategies } from "./sites";
+import { extractMatches } from "../../src/scraper/extractor";
+import { strategies } from "../../src/scraper/sites";
+import type { AnimeSite } from "../../src/shared/types";
 
 const site = (domains: string[], iframe_src: string[]): AnimeSite => ({
 	domains,

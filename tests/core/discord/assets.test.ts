@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { APPLICATION_ID } from "../../shared/constants";
+import { APPLICATION_ID } from "../../../src/shared/constants";
 
-type Assets = typeof import("./assets");
+type Assets = typeof import("../../../src/core/discord/assets");
 let assets: Assets;
 let fetchMock: ReturnType<typeof vi.fn>;
 
@@ -37,7 +37,7 @@ beforeEach(async () => {
 	vi.resetModules();
 	fetchMock = vi.fn();
 	vi.stubGlobal("fetch", fetchMock);
-	assets = await import("./assets");
+	assets = await import("../../../src/core/discord/assets");
 });
 
 describe("getAppAssetId", () => {

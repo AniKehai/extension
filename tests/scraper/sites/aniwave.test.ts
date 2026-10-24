@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { loadFixture, setBody } from "../../../tests/helpers/dom";
-import { aniwaveStrategy } from "./aniwave";
+import { aniwaveStrategy } from "../../../src/scraper/sites/aniwave";
+import { loadFixture, setBody } from "../../helpers/dom";
 
 describe("aniwaveStrategy", () => {
 	it("declares its domain and player iframes", () => {

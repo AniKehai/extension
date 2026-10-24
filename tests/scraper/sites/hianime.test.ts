@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { loadFixture, setBody } from "../../../tests/helpers/dom";
-import { hianimeStrategy } from "./hianime";
+import { hianimeStrategy } from "../../../src/scraper/sites/hianime";
+import { loadFixture, setBody } from "../../helpers/dom";
 
 describe("hianimeStrategy", () => {
 	it("declares its domain and player iframes", () => {

@@ -1,11 +1,6 @@
 import { describe, expect, it } from "vitest";
-import {
-	loadFixture,
-	setBody,
-	setHead,
-	visit,
-} from "../../../tests/helpers/dom";
-import { reanimeStrategy } from "./reanime";
+import { reanimeStrategy } from "../../../src/scraper/sites/reanime";
+import { loadFixture, setBody, setHead, visit } from "../../helpers/dom";
 
 const NULLS = { title: null, episode: null, coverUrl: null };
 const TITLE = "Overgeared - Episode 2 | Re:ANIME";
