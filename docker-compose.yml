@@ -4,8 +4,7 @@ x-ci-build: &ci-build
   context: .
   target: ci
 
-x-env: &env
-  # Linux only (optional): chown generated files back
+x-env: &env # Linux only (optional): chown generated files back
   HOST_UID: ${HOST_UID:-}
   HOST_GID: ${HOST_GID:-}
   PLAYWRIGHT_HTML_OPEN: never
@@ -80,7 +79,12 @@ services:
     environment: *env
     volumes:
       - ./.output:/app/.output
-    command: ["sh", "-c", "bun run zip:chrome && bun run zip:firefox && bun run zip:edge"]
+    command:
+      [
+        "sh",
+        "-c",
+        "bun run zip:chrome && bun run zip:firefox && bun run zip:edge",
+      ]
 
   e2e:
     <<: *browser
@@ -91,7 +95,12 @@ services:
     volumes:
       - ./playwright-report:/app/playwright-report
       - ./test-results:/app/test-results
-    command: ["sh", "-c", "bunx wxt build && bunx playwright test --reporter=list,html"]
+    command:
+      [
+        "sh",
+        "-c",
+        "bunx wxt build && bunx playwright test --reporter=list,html",
+      ]
 
   health:
     <<: *browser

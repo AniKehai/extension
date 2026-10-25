@@ -4,13 +4,13 @@ Thanks for helping out! This is the whole rulebook on one page.
 
 ## Ways to help
 
-| You want to...          | Do this |
-| ----------------------- | ------- |
-| Report a bug            | Open a **Bug Report** issue with steps, screenshots and [logs](../docs/troubleshooting.md#how-to-turn-on-logs). |
-| Request a site          | Open a **New Site Request** issue with the URL and the player's iframe domain. |
-| Add a site yourself     | Follow [Adding a site](../docs/adding-a-site.md). |
-| Fix a bug or add a feature | Follow the workflow below. For big changes, open an issue first. |
-| Improve docs            | Edit `docs/` or `README.md`. |
+| You want to...             | Do this                                                                                                         |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Report a bug               | Open a **Bug Report** issue with steps, screenshots and [logs](../docs/troubleshooting.md#how-to-turn-on-logs). |
+| Request a site             | Open a **New Site Request** issue with the URL and the player's iframe domain.                                  |
+| Add a site yourself        | Follow [Adding a site](../docs/adding-a-site.md).                                                               |
+| Fix a bug or add a feature | Follow the workflow below. For big changes, open an issue first.                                                |
+| Improve docs               | Edit `docs/` or `README.md`.                                                                                    |
 
 > **Security problem?** Do not open a public issue. See [SECURITY.md](./SECURITY.md).
 
@@ -55,13 +55,13 @@ fix: stop timer drifting after pausing
 
 Lefthook (`bunx lefthook install`) runs on your machine; CI runs the same checks again.
 
-| When | What |
-| ---- | ---- |
-| `git commit` | Biome fix on staged files, typecheck, commit message check |
-| `git push` | Unit tests |
-| PR | `ci.yml`: lint, typecheck, tests with coverage, E2E, build (Chrome, Firefox, Edge) |
-| PR touching Docker files | `docker.yml`: Dockerfile lint and the full suite in containers |
-| PR and weekly | `security.yml`: `bun audit` and Gitleaks |
+| When                     | What                                                                               |
+| ------------------------ | ---------------------------------------------------------------------------------- |
+| `git commit`             | Biome fix on staged files, typecheck, commit message check                         |
+| `git push`               | Unit tests                                                                         |
+| PR                       | `ci.yml`: lint, typecheck, tests with coverage, E2E, build (Chrome, Firefox, Edge) |
+| PR touching Docker files | `docker.yml`: Dockerfile lint and the full suite in containers                     |
+| PR and weekly            | `security.yml`: `bun audit` and Gitleaks                                           |
 
 Please do not use `--no-verify`. CI will fail anyway.
 

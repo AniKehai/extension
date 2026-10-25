@@ -1,7 +1,7 @@
 name: Live DOM Health Check
 on:
   schedule:
-    - cron: '0 0 * * 0,3'
+    - cron: "0 0 * * 0,3"
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,9 +19,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Playwright Chromium
-        run: 'bun run test:e2e:install'
+        run: "bun run test:e2e:install"
       - name: Run Live Health Checks
-        run: 'bun run test:health'
+        run: "bun run test:health"
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4

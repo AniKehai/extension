@@ -13,12 +13,12 @@ The registry test (`tests/scraper/sites/index.test.ts`) enforces: bare hostnames
 
 ## 2. Find the selectors
 
-| Data | Needed? | Tip |
-| ---- | ------- | --- |
-| Anime title | Yes | Prefer stable classes or ids. |
-| Episode label ("Episode 3") | Yes | |
-| Episode name ("Killing Magic") | No | Skip it when it only repeats the label. |
-| Cover image URL | No | Return `null` if there is none. |
+| Data                           | Needed? | Tip                                     |
+| ------------------------------ | ------- | --------------------------------------- |
+| Anime title                    | Yes     | Prefer stable classes or ids.           |
+| Episode label ("Episode 3")    | Yes     |                                         |
+| Episode name ("Killing Magic") | No      | Skip it when it only repeats the label. |
+| Cover image URL                | No      | Return `null` if there is none.         |
 
 Test in the DevTools console: `document.querySelector("h1.title")?.textContent`. Some sites keep the data in the page `<title>` or the URL instead: see `kaa.ts`, `reanime.ts` and `miruro.ts`.
 
@@ -36,7 +36,9 @@ export const mysiteStrategy: AnimeSite = {
 
 	getAnimeMetadata: () => {
 		const title = document.querySelector("h1.title")?.textContent?.trim();
-		const episode = document.querySelector(".episode-label")?.textContent?.trim();
+		const episode = document
+			.querySelector(".episode-label")
+			?.textContent?.trim();
 		const episodeName = document
 			.querySelector(".ep-list .active .name")
 			?.textContent?.trim();
@@ -117,10 +119,10 @@ Run `bun run dev:chrome` (or the Docker dev server), open an episode and check y
 
 ## Common mistakes
 
-| Mistake | Result |
-| ------- | ------ |
-| `https://site.com` in `domains` | Registry test fails |
+| Mistake                                 | Result                          |
+| --------------------------------------- | ------------------------------- |
+| `https://site.com` in `domains`         | Registry test fails             |
 | Player domain missing from `iframe_src` | Title shows but no progress bar |
-| Throwing on a missing element | Nothing updates |
-| Selectors that also match the home page | Junk status on non-watch pages |
-| Not trimming text | Titles like `" Frieren "` |
+| Throwing on a missing element           | Nothing updates                 |
+| Selectors that also match the home page | Junk status on non-watch pages  |
+| Not trimming text                       | Titles like `" Frieren "`       |

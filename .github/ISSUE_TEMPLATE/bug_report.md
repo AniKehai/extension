@@ -1,4 +1,5 @@
 ---
+
 name: Bug Report
 about: Create a report to help us improve the extension
 title: '[Bug] '
@@ -28,12 +29,12 @@ How to turn logs on: open the extension's background service worker console and 
 (see https://github.com/minkxx/AniKehai/blob/main/docs/troubleshooting.md#how-to-turn-on-logs).
 
 **Environment**
- - OS: [e.g. Windows 11, macOS, Linux, Android]
- - Browser: [e.g. Chrome, Firefox, Edge, Kiwi]
- - Extension version: [shown at the bottom of the popup]
- - Logged in with Discord: [Yes/No]
- - Privacy mode on: [Yes/No]
- - "Broadcast to Discord" on: [Yes/No]
+- OS: [e.g. Windows 11, macOS, Linux, Android]
+- Browser: [e.g. Chrome, Firefox, Edge, Kiwi]
+- Extension version: [shown at the bottom of the popup]
+- Logged in with Discord: [Yes/No]
+- Privacy mode on: [Yes/No]
+- "Broadcast to Discord" on: [Yes/No]
 
 **Additional context**
 Anything else that might help.

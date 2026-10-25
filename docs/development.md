@@ -21,16 +21,16 @@ The container cannot open a browser, so load the build yourself from `.output/`:
 
 Saving a file reloads the extension. On Linux, run `export HOST_UID=$(id -u) HOST_GID=$(id -g)` first so files are not owned by root (or copy `.env.example` to `.env`).
 
-| Command | What it does |
-| ------- | ------------ |
-| `bun run docker:shell` | Shell inside the container |
-| `bun run docker:lint` | Biome + typecheck |
-| `bun run docker:test` | Unit tests with coverage |
-| `bun run docker:e2e` | Build, then Chromium E2E tests |
-| `bun run docker:health` | Live site selector checks |
-| `bun run docker:build` | Chrome, Firefox and Edge zips into `.output/` |
-| `bun run docker:ci` | **Everything CI does.** Run this before a PR. |
-| `bun run docker:clean` | Remove containers, volumes and images |
+| Command                 | What it does                                  |
+| ----------------------- | --------------------------------------------- |
+| `bun run docker:shell`  | Shell inside the container                    |
+| `bun run docker:lint`   | Biome + typecheck                             |
+| `bun run docker:test`   | Unit tests with coverage                      |
+| `bun run docker:e2e`    | Build, then Chromium E2E tests                |
+| `bun run docker:health` | Live site selector checks                     |
+| `bun run docker:build`  | Chrome, Firefox and Edge zips into `.output/` |
+| `bun run docker:ci`     | **Everything CI does.** Run this before a PR. |
+| `bun run docker:clean`  | Remove containers, volumes and images         |
 
 ## Option B: Manual
 
@@ -52,27 +52,27 @@ Use `dev:firefox` or `dev:edge` for the others. If no browser opens, load `.outp
 
 ## Commands
 
-| Command | What it does |
-| ------- | ------------ |
-| `bun run dev:chrome` / `dev:firefox` / `dev:edge` | Dev server with hot reload |
-| `bun run build:<browser>` / `zip:<browser>` | Production build / release zip (`chrome`, `firefox`, `edge`) |
-| `bun run lint` / `lint:fix` | Check / auto-fix style and lint |
-| `bun run typecheck` | TypeScript check |
-| `bun run test` / `test:watch` / `test:coverage` | Unit tests (coverage enforces the minimums) |
-| `bun run test:e2e:install` | One time: install Playwright's Chromium |
-| `bun run test:e2e` | Build, then run E2E tests |
-| `bun run test:health` | Check the live sites' selectors (needs internet) |
-| `bun run validate` | `lint` + `typecheck` + `test` |
+| Command                                           | What it does                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------ |
+| `bun run dev:chrome` / `dev:firefox` / `dev:edge` | Dev server with hot reload                                   |
+| `bun run build:<browser>` / `zip:<browser>`       | Production build / release zip (`chrome`, `firefox`, `edge`) |
+| `bun run lint` / `lint:fix`                       | Check / auto-fix style and lint                              |
+| `bun run typecheck`                               | TypeScript check                                             |
+| `bun run test` / `test:watch` / `test:coverage`   | Unit tests (coverage enforces the minimums)                  |
+| `bun run test:e2e:install`                        | One time: install Playwright's Chromium                      |
+| `bun run test:e2e`                                | Build, then run E2E tests                                    |
+| `bun run test:health`                             | Check the live sites' selectors (needs internet)             |
+| `bun run validate`                                | `lint` + `typecheck` + `test`                                |
 
 ## Tests
 
 Everything lives in `tests/` and mirrors `src/`.
 
-| Kind | Where | Tool |
-| ---- | ----- | ---- |
-| Unit and popup tests | `tests/core`, `tests/scraper`, `tests/shared`, `tests/entrypoints`, `tests/popup`, `tests/manifest.test.ts` | Vitest + happy-dom |
-| E2E | `tests/e2e/` | Playwright with the built extension. Discord hosts are mapped to localhost, so the popup shows "Connecting". That is expected. |
-| Live health | `tests/health/` | Playwright against the real sites (Sunday and Wednesday in CI). A Cloudflare block is skipped, not failed. |
+| Kind                 | Where                                                                                                       | Tool                                                                                                                           |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Unit and popup tests | `tests/core`, `tests/scraper`, `tests/shared`, `tests/entrypoints`, `tests/popup`, `tests/manifest.test.ts` | Vitest + happy-dom                                                                                                             |
+| E2E                  | `tests/e2e/`                                                                                                | Playwright with the built extension. Discord hosts are mapped to localhost, so the popup shows "Connecting". That is expected. |
+| Live health          | `tests/health/`                                                                                             | Playwright against the real sites (Sunday and Wednesday in CI). A Cloudflare block is skipped, not failed.                     |
 
 Run one file: `bunx vitest run tests/scraper/sites/hianime.test.ts`. Run by name: `bunx vitest run -t "paused"`.
 

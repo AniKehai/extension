@@ -1,4 +1,5 @@
 ---
+
 name: New Site Request
 about: Request support for a new anime streaming website
 title: '[Site] '
