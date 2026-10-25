@@ -40,3 +40,8 @@ test-results
 
 # audit reports
 SECURITY_AUDIT_REPORT.md
+
+# claude
+.claude/
+CLAUDE.md
+scripts/nim-workflow.ts
