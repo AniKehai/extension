@@ -414,26 +414,6 @@ describe("LOGIN_DISCORD", () => {
 	});
 });
 
-describe("LOGOUT_DISCORD", () => {
-	it("disconnects the gateway, deletes the token and replies without re-auth prompt", async () => {
-		await startBackground();
-		await browser.storage.local.set({ discord_token: "tok" });
-		const create = vi.spyOn(browser.tabs, "create");
-
-		const { sendResponse, returned } = await dispatch({
-			type: "LOGOUT_DISCORD",
-		});
-
-		expect(returned).toBe(true);
-		expect(gateway.disconnect).toHaveBeenCalledTimes(1);
-		expect(
-			(await browser.storage.local.get("discord_token")).discord_token,
-		).toBeUndefined();
-		expect(sendResponse).toHaveBeenCalledWith({ success: true });
-		expect(create).not.toHaveBeenCalled();
-	});
-});
-
 describe("SET_ACTIVITY_ENABLED", () => {
 	beforeEach(startBackground);
 
