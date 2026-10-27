@@ -1,0 +1,16 @@
+ 
+<div>
+    <h1>Frieren</h1>
+
+    <h2>Episodes</h2>
+    <div>
+        <button>Episode 1</button>
+        <button style="border-color: rgb(229, 9, 20);">
+            Episode 2
+        </button>
+    </div>
+
+    <div
+        style="background-image: url('https://animex.example/poster/abc.jpg');"
+    ></div>
+</div>
