@@ -22,14 +22,8 @@ const getEpisodeInfo = (): { episode: string; name: string | null } | null => {
 };
 
 export const miruroStrategy: AnimeSite = {
-	domains: [
-		"www.miruro.tv",
-		"www.miruro.to",
-		"www.miruro.cx",
-		"www.miruro.bz",
-		"barelystarted.miruro.tv",
-	],
-	iframe_src: ["strm.cx"],
+	domains: ["www.miruro.cx"],
+	iframe_src: ["strm.cx", "megaplay.buzz"],
 
 	getAnimeMetadata: () => {
 		if (!window.location.pathname.startsWith("/watch/")) {
