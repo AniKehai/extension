@@ -6,6 +6,7 @@ import { aniwaveStrategy } from "./aniwave";
 import { hianimeStrategy } from "./hianime";
 import { kaaStrategy } from "./kaa";
 import { miruroStrategy } from "./miruro";
+import { miruroV2Strategy } from "./miruro-v2";
 import { reanimeStrategy } from "./reanime";
 
 export const strategies = [
@@ -18,4 +19,5 @@ export const strategies = [
 	kaaStrategy,
 	miruroStrategy,
 	animexStrategy,
+	miruroV2Strategy,
 ];

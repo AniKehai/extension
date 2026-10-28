@@ -49,7 +49,7 @@ const SITES = [
 	},
 	{
 		id: "miruro",
-		url: "https://www.miruro.tv/watch/oshi-no-ko?ep=3",
+		url: "https://www.miruro.cx/watch/oshi-no-ko?ep=3",
 		pageTitle: "Watch Miruro",
 		expectedTitle: "Oshi no Ko",
 		expectedEpisode: "Episode 3: Idol",

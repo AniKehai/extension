@@ -173,7 +173,7 @@ describe("on a supported site (metadata strategy)", () => {
 	});
 
 	it.each([
-		["www.miruro.tv", "https://www.miruro.tv/watch/x?ep=1"],
+		["www.miruro.cx", "https://www.miruro.cx/watch/x?ep=1"],
 		["kaa.lt", "https://kaa.lt/show/ep-1-abc"],
 		["reanime.to", "https://reanime.to/watch/x?ep=1"],
 	])("recognises %s", (_host, url) => {

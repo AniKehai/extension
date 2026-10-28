@@ -7,9 +7,9 @@ const NULLS = { title: null, episode: null, coverUrl: null };
 describe("miruroStrategy", () => {
 	it("covers every miruro mirror domain and the strm.cx player", () => {
 		expect(miruroStrategy.domains).toEqual(
-			expect.arrayContaining(["www.miruro.tv", "www.miruro.to"]),
+			expect.arrayContaining(["www.miruro.cx"]),
 		);
-		expect(miruroStrategy.iframe_src).toEqual(["strm.cx"]);
+		expect(miruroStrategy.iframe_src).toEqual(["strm.cx", "megaplay.buzz"]);
 	});
 
 	it.each(["/", "/info/12345", "/search?q=x"])(

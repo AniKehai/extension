@@ -10,7 +10,8 @@ import {
 	sanitizeString,
 } from "../shared/sanitize";
 
-const isMatch = (host: string, d: string) =>
+const isMatch = (host: string, d: string) => host === d;
+const isSubdomainMatch = (host: string, d: string) =>
 	host === d || host.endsWith(`.${d}`);
 
 export default defineContentScript({
@@ -25,18 +26,21 @@ export default defineContentScript({
 		);
 
 		const iframeStrategy = strategies.find((stg) =>
-			stg.iframe_src.some((src) => isMatch(host, src)),
+			stg.iframe_src.some((src) => isSubdomainMatch(host, src)),
 		);
 
 		if (!metaStrategy && !iframeStrategy) return;
 
 		if (iframeStrategy && window !== window.top && !metaStrategy) {
 			try {
-				const parentHost = new URL(document.referrer).hostname;
-				const parentMatches = strategies.some((stg) =>
-					stg.domains.some((domain) => isMatch(parentHost, domain)),
-				);
-				if (!parentMatches) return;
+				const referrer = document.referrer;
+				if (referrer) {
+					const parentHost = new URL(referrer).hostname;
+					const parentMatches = strategies.some((stg) =>
+						stg.domains.some((domain) => isMatch(parentHost, domain)),
+					);
+					if (!parentMatches) return;
+				}
 			} catch {
 				return;
 			}
