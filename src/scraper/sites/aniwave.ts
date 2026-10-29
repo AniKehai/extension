@@ -3,7 +3,7 @@ import { getStandardVideoStats } from "../parser";
 
 export const aniwaveStrategy: AnimeSite = {
 	domains: ["aniwaves.ru"],
-	iframe_src: ["play.echovideo.ru", "gn1r5n.org", "myvidplay.com"],
+	iframe_src: ["play.echovideo.ru", "mfw09.org", "playmogo.com"],
 
 	getAnimeMetadata: () => {
 		const titleElement = document.querySelector("h1.title.d-title");
