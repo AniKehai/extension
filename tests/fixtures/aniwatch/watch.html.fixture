@@ -1,9 +1,12 @@
-<div class="awt-watch-info-bar">
-  <img class="awt-wib-poster" src="https://aniwatch.example/p/dandadan.jpg">
-  <div class="awt-wib-meta"><h1 class="awt-wib-title">Dandadan Episode 7</h1></div>
+<div class="mq-nowplaying__h">
+  <span class="mq-flip" data-mq-en="Dandadan">Dandadan Episode 7</span>
 </div>
-<span id="wc-ep-label">Episode 7</span>
-<div id="episodes-list">
-  <a class="ws-ep" href="/6"><span class="awt-ws-ep__title">Six</span></a>
-  <a class="ws-ep ws-ep--active" href="/7"><span class="awt-ws-ep__title">Evil Eye</span></a>
+<div class="mq-nowplaying__ep">
+  <span data-mq-now>Episode 7</span>
+  <span data-mq-now-name>: Evil Eye</span>
+</div>
+<div class="mq-showcard">
+  <a class="mq-showcard__art">
+    <img src="https://aniwatch.example/p/dandadan.jpg">
+  </a>
 </div>
