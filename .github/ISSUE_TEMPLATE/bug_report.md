@@ -26,7 +26,7 @@ What you expected to see on your Discord Rich Presence.
 **Screenshots / logs**
 Add screenshots of your Discord status and, if you can, the extension logs.
 How to turn logs on: open the extension's background service worker console and run `enable_logs = true`
-(see https://github.com/minkxx/AniKehai/blob/main/docs/troubleshooting.md#how-to-turn-on-logs).
+(see https://github.com/AniKehai/extension/blob/main/docs/troubleshooting.md#how-to-turn-on-logs).
 
 **Environment**
 - OS: [e.g. Windows 11, macOS, Linux, Android]
