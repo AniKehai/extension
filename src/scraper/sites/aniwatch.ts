@@ -6,26 +6,34 @@ export const aniwatchStrategy: AnimeSite = {
 	iframe_src: ["vidnest.fun", "tryembed.us.cc", "megaplay.buzz"],
 
 	getAnimeMetadata: () => {
-		const titleElement = document.querySelector(
-			".awt-watch-info-bar .awt-wib-meta h1.awt-wib-title",
+		const titleElement = document.querySelector(".mq-nowplaying__h .mq-flip");
+		const episodeElement = document.querySelector(
+			".mq-nowplaying__ep span[data-mq-now]",
 		);
-		const episodeElement = document.getElementById("wc-ep-label");
 		const episodeNameElement = document.querySelector(
-			"#episodes-list a.ws-ep--active .awt-ws-ep__title",
+			".mq-nowplaying__ep span[data-mq-now-name]",
 		);
 		const imageElement = document.querySelector(
-			".awt-watch-info-bar img.awt-wib-poster",
+			".mq-showcard a.mq-showcard__art img",
 		) as HTMLImageElement;
 
-		const title = titleElement?.textContent?.split("Episode")[0]?.trim();
+		const title =
+			titleElement?.getAttribute("data-mq-en") ||
+			titleElement?.textContent?.trim();
+
 		const episode = episodeElement?.textContent?.trim();
-		const episodeName = episodeNameElement?.textContent?.trim();
+
+		let episodeName = episodeNameElement?.textContent?.trim();
+		if (episodeName?.startsWith(":")) {
+			episodeName = episodeName.replace(/^:\s*/, "").trim();
+		}
+
 		const coverUrl = imageElement?.src;
 
 		return {
 			title: title ?? null,
 			episode: episode ?? null,
-			episodeName: episodeName && episode !== episodeName ? episodeName : null,
+			episodeName: episodeName || null,
 			coverUrl: coverUrl ?? null,
 		};
 	},
