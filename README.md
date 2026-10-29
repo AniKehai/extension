@@ -9,9 +9,9 @@ A lightweight, standalone browser extension that shows the anime you are watchin
 <div align="center">
 
 [![Website](https://img.shields.io/badge/website-anikehai.vercel.app-7c5cff?style=flat&logo=vercel)](https://anikehai.vercel.app/)
-![Stars](https://img.shields.io/github/stars/minkxx/AniKehai?style=flat)
-![Forks](https://img.shields.io/github/forks/minkxx/AniKehai?style=flat)
-![Version](https://img.shields.io/github/v/release/minkxx/AniKehai?style=flat)
+![Stars](https://img.shields.io/github/stars/AniKehai/extension?style=flat)
+![Forks](https://img.shields.io/github/forks/AniKehai/extension?style=flat)
+![Version](https://img.shields.io/github/v/release/AniKehai/extension?style=flat)
 
 <!-- DOWNLOADS:START -->
 ![GitHub Downloads](https://img.shields.io/badge/github_downloads-215-blue?style=flat&labelColor=555555)
@@ -35,7 +35,7 @@ Open the [Firefox Add-ons page](https://addons.mozilla.org/en-US/firefox/addon/a
 **Chrome / Edge (Desktop)**
 Not in the Chrome Web Store yet, so install it by hand:
 
-1. Download the `chrome` zip (or the `edge` zip for Edge) from the [latest release](https://github.com/minkxx/AniKehai/releases/latest).
+1. Download the `chrome` zip (or the `edge` zip for Edge) from the [latest release](https://github.com/AniKehai/extension/releases/latest).
 2. Unzip it into a normal folder.
 3. Open `chrome://extensions` (or `edge://extensions`) and turn on **Developer mode**.
 4. Click **Load unpacked** and pick the unzipped folder.
@@ -43,7 +43,7 @@ Not in the Chrome Web Store yet, so install it by hand:
 **Android (Kiwi / Lemur)**
 
 1. Install [Kiwi Browser](https://github.com/kiwibrowser/src.next/releases/tag/14310011181).
-2. Download the `chrome` zip from the [latest release](https://github.com/minkxx/AniKehai/releases/latest) to your phone.
+2. Download the `chrome` zip from the [latest release](https://github.com/AniKehai/extension/releases/latest) to your phone.
 3. In Kiwi, open the menu (⋮) → **Extensions** and turn on **Developer mode**.
 4. Tap **+ (from .zip/.crx/.user.js)** and pick the zip.
 
@@ -68,7 +68,7 @@ Not in the Chrome Web Store yet, so install it by hand:
 Bug reports, new sites, docs and code are all welcome.
 
 ```bash
-git clone https://github.com/minkxx/AniKehai.git
+git clone https://github.com/AniKehai/extension.git
 cd AniKehai
 docker compose up --build dev
 ```
