@@ -1,6 +1,6 @@
 # Troubleshooting
 
-Still stuck? Ask on the [Discord server](https://discord.gg/w9Q7YUrzpn) or open a [bug report](https://github.com/minkxx/AniKehai/issues/new?template=bug_report.md).
+Still stuck? Ask on the [Discord server](https://discord.gg/w9Q7YUrzpn) or open a [bug report](https://github.com/AniKehai/extension/issues/new?template=bug_report.md).
 
 ## How to turn on logs
 
