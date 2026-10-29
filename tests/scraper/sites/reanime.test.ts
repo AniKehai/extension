@@ -7,7 +7,11 @@ const TITLE = "Overgeared - Episode 2 | Re:ANIME";
 
 describe("reanimeStrategy", () => {
 	it("declares its domain and player iframe", () => {
-		expect(reanimeStrategy.domains).toEqual(["reanime.to"]);
+		expect(reanimeStrategy.domains).toEqual([
+			"reanime.to",
+			"reanime.cz",
+			"reanime.wtf",
+		]);
 		expect(reanimeStrategy.iframe_src).toEqual(["flixcloud.cc"]);
 	});
 
