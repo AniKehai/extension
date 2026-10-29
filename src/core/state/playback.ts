@@ -24,6 +24,9 @@ let lastBroadcast = {
 	durationMs: 0,
 };
 
+let lastValidMetadataTime = 0;
+const METADATA_TTL = 30_000; // 30 seconds
+
 export let activityEnabled = true;
 export let privacyEnabled = false;
 
@@ -47,6 +50,7 @@ export function clearAnimeState() {
 		estimatedStart: 0,
 		durationMs: 0,
 	};
+	lastValidMetadataTime = 0;
 }
 
 export function evaluateDiscordUpdate(
@@ -79,12 +83,23 @@ export function evaluateDiscordUpdate(
 	const isPrevEmpty =
 		lastBroadcast.title === null || lastBroadcast.title === "";
 
+	if (isCurrentEmpty && !isPrevEmpty) {
+		const timeSinceValidMetadata = Date.now() - lastValidMetadataTime;
+		if (timeSinceValidMetadata < METADATA_TTL) {
+			return { shouldUpdate: false, newEstimatedStart };
+		}
+	}
+
 	if (isCurrentEmpty && isPrevEmpty) {
 		return { shouldUpdate: false, newEstimatedStart };
 	}
 
 	const shouldUpdate =
 		hasInfoChanged || hasStateChanged || hasDurationChanged || hasTimeDrifted;
+
+	if (!isCurrentEmpty && (messageType === "INFO_UPDATE" || shouldUpdate)) {
+		lastValidMetadataTime = Date.now();
+	}
 
 	return { shouldUpdate, newEstimatedStart };
 }

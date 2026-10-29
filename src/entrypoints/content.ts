@@ -14,6 +14,18 @@ const isMatch = (host: string, d: string) => host === d;
 const isSubdomainMatch = (host: string, d: string) =>
 	host === d || host.endsWith(`.${d}`);
 
+const KAA_EPISODE_PATH_REGEX = /\/ep-(\d+(?:\.\d+)?)/;
+
+let hasSentValidInfoUpdate = false;
+const GRACE_PERIOD_MS = 30_000;
+const pageLoadTime = Date.now();
+
+const coordinationChannel = new BroadcastChannel(
+	"anikehai-presence-coordination",
+);
+let _isTimeAuthority = false;
+let _isMetadataAuthority = false;
+
 export default defineContentScript({
 	matches: [...extractMatches(strategies)],
 	allFrames: true,
@@ -31,7 +43,23 @@ export default defineContentScript({
 
 		if (!metaStrategy && !iframeStrategy) return;
 
-		if (iframeStrategy && window !== window.top && !metaStrategy) {
+		const isIframe = window !== window.top;
+		const isMainFrame = !isIframe && metaStrategy;
+		const isVideoFrame = isIframe && iframeStrategy;
+
+		if (isVideoFrame) {
+			_isTimeAuthority = true;
+		} else if (isMainFrame) {
+			_isMetadataAuthority = true;
+		}
+
+		coordinationChannel.onmessage = (event) => {
+			if (event.data.type === "INFO_UPDATE_SENT") {
+			} else if (event.data.type === "TIME_UPDATE_SENT") {
+			}
+		};
+
+		if (isVideoFrame && window !== window.top && !metaStrategy) {
 			try {
 				const referrer = document.referrer;
 				if (referrer) {
@@ -52,8 +80,20 @@ export default defineContentScript({
 			});
 		};
 
+		const isKaaLtEpisodePage =
+			isMainFrame &&
+			host === "kaa.lt" &&
+			KAA_EPISODE_PATH_REGEX.test(window.location.pathname) &&
+			(document.querySelector(".v-card__title") ||
+				document.querySelector(".v-image__image") ||
+				document.querySelector(".episode-list-item"));
+
 		ctx.setInterval(() => {
 			try {
+				const now = Date.now();
+				const inGracePeriod =
+					isKaaLtEpisodePage && now - pageLoadTime < GRACE_PERIOD_MS;
+
 				if (iframeStrategy) {
 					const stats = iframeStrategy.getProgressStats();
 
@@ -64,10 +104,11 @@ export default defineContentScript({
 						isPaused: stats.isPaused ?? true,
 					});
 
+					coordinationChannel.postMessage({ type: "TIME_UPDATE_SENT" });
 					return;
 				}
 
-				if (metaStrategy) {
+				if (isMainFrame && metaStrategy) {
 					const meta = metaStrategy.getAnimeMetadata();
 
 					const title = sanitizeString(meta.title, MAX_TITLE_LENGTH);
@@ -78,10 +119,20 @@ export default defineContentScript({
 					);
 					const coverUrl = sanitizeCoverUrl(meta.coverUrl);
 
-					if (!title || !episode) {
-						send({ type: "STOPPED" });
+					const hasValidMetadata = title && episode;
+
+					if (!hasValidMetadata) {
+						if (inGracePeriod) {
+							logger.log("[kaa] Grace period: skipping STOPPED");
+							return;
+						}
+						if (hasSentValidInfoUpdate) {
+							send({ type: "STOPPED" });
+						}
 						return;
 					}
+
+					hasSentValidInfoUpdate = true;
 
 					send({
 						type: "INFO_UPDATE",
@@ -90,6 +141,8 @@ export default defineContentScript({
 						episodeName: episodeName || null,
 						coverUrl,
 					});
+
+					coordinationChannel.postMessage({ type: "INFO_UPDATE_SENT" });
 				}
 			} catch (err) {
 				logger.error("DOM scraping error:", err);
