@@ -37,7 +37,7 @@ const getEpisodeName = (episodeNumber: string): string | null => {
 };
 
 export const reanimeStrategy: AnimeSite = {
-	domains: ["reanime.to"],
+	domains: ["reanime.to", "reanime.cz", "reanime.wtf"],
 	iframe_src: ["flixcloud.cc"],
 
 	getAnimeMetadata: () => {

@@ -4,7 +4,13 @@ import { loadFixture, mockVideo, setBody } from "../../helpers/dom";
 
 describe("anikotoStrategy", () => {
 	it("declares its domains and player iframes", () => {
-		expect(anikotoStrategy.domains).toEqual(["anikototv.to", "anikoto.cz"]);
+		expect(anikotoStrategy.domains).toEqual([
+			"anikototv.to",
+			"anikoto.cz",
+			"anikoto.me",
+			"anikoto.net",
+			"anikototv.se",
+		]);
 		expect(anikotoStrategy.iframe_src).toContain("megaplay.buzz");
 	});
 

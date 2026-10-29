@@ -2,7 +2,13 @@ import type { AnimeSite } from "../../shared/types";
 import { getStandardVideoStats } from "../parser";
 
 export const anikotoStrategy: AnimeSite = {
-	domains: ["anikototv.to", "anikoto.cz"],
+	domains: [
+		"anikototv.to",
+		"anikoto.cz",
+		"anikoto.me",
+		"anikoto.net",
+		"anikototv.se",
+	],
 	iframe_src: ["vidtube.site", "megaplay.buzz", "viswish.live"],
 
 	getAnimeMetadata: () => {
