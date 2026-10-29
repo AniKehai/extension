@@ -13,25 +13,13 @@ export const MAX_COVER_URL_LENGTH = 2048;
 export const ALLOWED_COVER_DOMAINS = [
 	// AniList media CDN
 	"anilist.co",
-	"anilistcdn.com",
-	"anili.st",
 	// Site owned image hosts
-	"anikoto.tv",
-	"anikoto.cz",
-	"anikoto.nu",
-	"anicdn.ru",
-	"aniwatch.cx",
-	"aniwave.ru",
+	"cdn.anipixcdn.co",
 	"aniwaves.ru",
-	"animepahe.pw",
 	"hianime.at",
+	"myanimexadmin.online",
+	"aniwatch.cx",
 	"kaa.lt",
-	"miruro.tv",
-	"miruro.to",
-	"miruro.cx",
-	"miruro.bz",
-	"myanimex.com",
-	"reanime.to",
 ];
 
 // biome-ignore lint/suspicious/noControlCharactersInRegex: stripping control characters from scraped metadata is the point of this regex
