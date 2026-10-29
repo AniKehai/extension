@@ -31,7 +31,7 @@ const watching = (patch: Record<string, unknown> = {}) => ({
 	title: "Frieren",
 	episode: "Episode 3",
 	episodeName: "Killing Magic",
-	coverUrl: "https://img.anili.st/cover.jpg",
+	coverUrl: "https://s4.anilist.co/cover.jpg",
 	currentMs: 60_000,
 	durationMs: 1_440_000,
 	isPaused: false,
@@ -495,7 +495,7 @@ describe("setActivity", () => {
 	it("registers the cover via getLargeImageKey when a coverUrl exists", async () => {
 		await presence(watching());
 		expect(getLargeImageKey).toHaveBeenCalledWith(
-			"https://img.anili.st/cover.jpg",
+			"https://s4.anilist.co/cover.jpg",
 		);
 	});
 

@@ -49,20 +49,20 @@ describe("sanitizeCoverUrl", () => {
 	});
 
 	it("keeps HTTPS URLs from trusted hosts", () => {
-		expect(sanitizeCoverUrl("https://img.anili.st/cover.jpg")).toBe(
-			"https://img.anili.st/cover.jpg",
-		);
 		expect(
 			sanitizeCoverUrl("https://s4.anilist.co/file/anilistcdn/c.jpg"),
 		).toBe("https://s4.anilist.co/file/anilistcdn/c.jpg");
+		expect(sanitizeCoverUrl("https://s4.anilist.co/cover.jpg")).toBe(
+			"https://s4.anilist.co/cover.jpg",
+		);
 		expect(sanitizeCoverUrl("https://kaa.lt/image/poster/abc.webp")).toBe(
 			"https://kaa.lt/image/poster/abc.webp",
 		);
 	});
 
 	it("trims surrounding whitespace", () => {
-		expect(sanitizeCoverUrl("  https://img.anili.st/c.jpg  ")).toBe(
-			"https://img.anili.st/c.jpg",
+		expect(sanitizeCoverUrl("  https://s4.anilist.co/c.jpg  ")).toBe(
+			"https://s4.anilist.co/c.jpg",
 		);
 	});
 
@@ -95,7 +95,7 @@ describe("sanitizeCoverUrl", () => {
 	});
 
 	it("limits the URL length", () => {
-		const long = `https://img.anili.st/${"a".repeat(5000)}.jpg`;
+		const long = `https://s4.anilist.co/${"a".repeat(5000)}.jpg`;
 		expect(sanitizeCoverUrl(long)).toHaveLength(MAX_COVER_URL_LENGTH);
 	});
 
