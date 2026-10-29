@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 > Want to add it yourself? It is a great first contribution. See
-> https://github.com/minkxx/AniKehai/blob/main/docs/adding-a-site.md
+> https://github.com/AniKehai/extension/blob/main/docs/adding-a-site.md
 
 **Site name**
 What is the name of the streaming site? (e.g., Crunchyroll, Aniwave)
