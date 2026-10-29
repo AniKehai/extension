@@ -15,7 +15,7 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright \
 
 # hadolint ignore=DL3008
 RUN apt-get update \
- && apt-get install -y --no-install-recommends ca-certificates git \
+ && apt-get install -y --no-install-recommends ca-certificates git jq \
  && rm -rf /var/lib/apt/lists/* \
  && npm install -g "bun@${BUN_VERSION}" \
  && bun --version
@@ -26,16 +26,27 @@ COPY docker/entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh \
  && chmod +x /usr/local/bin/docker-entrypoint.sh
 
-FROM base AS deps
+FROM base AS deps-prep
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 COPY package.json bun.lock ./
+RUN jq '{name, packageManager, engines, dependencies, devDependencies, optionalDependencies} | with_entries(select(.value != null))' package.json > package.json.minimal \
+ && rm package.json
+
+FROM base AS deps
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+COPY --from=deps-prep /app/package.json.minimal ./package.json
+COPY --from=deps-prep /app/bun.lock ./
+
 RUN --mount=type=cache,target=/root/.bun/install/cache \
     bun install --frozen-lockfile --ignore-scripts \
- && cat package.json bun.lock | sha256sum | cut -d' ' -f1 | tr -d '\n' > node_modules/.install-stamp
+ && cat bun.lock | sha256sum | cut -d' ' -f1 | tr -d '\n' > node_modules/.install-stamp
 
 RUN bunx playwright install --with-deps chromium \
  && rm -rf /var/lib/apt/lists/*
+
+COPY package.json ./
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
