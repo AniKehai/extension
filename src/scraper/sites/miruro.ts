@@ -41,7 +41,7 @@ export const miruroStrategy: AnimeSite = {
 				: null);
 
 		return {
-			title: cover?.alt.trim() || null,
+			title: (cover?.alt ?? "").trim() || null,
 			episode,
 			episodeName: info?.name && info.name !== episode ? info.name : null,
 			coverUrl: cover?.src || null,
