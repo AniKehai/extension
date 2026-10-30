@@ -1,5 +1,7 @@
 import { logger } from "../../shared/logger";
 
+const ANILIST_TIMEOUT_MS = 10_000;
+
 export async function fetchAnilistCover(
 	anilistId: number,
 ): Promise<string | null> {
@@ -14,6 +16,9 @@ export async function fetchAnilistCover(
     `;
 
 	try {
+		const controller = new AbortController();
+		const timeout = setTimeout(() => controller.abort(), ANILIST_TIMEOUT_MS);
+
 		const res = await fetch("https://graphql.anilist.co", {
 			method: "POST",
 			headers: {
@@ -24,12 +29,24 @@ export async function fetchAnilistCover(
 				query,
 				variables: { id: anilistId },
 			}),
+			signal: controller.signal,
 		});
+
+		clearTimeout(timeout);
+
+		if (!res.ok) {
+			logger.error("AniList API Error:", res.status, await res.text());
+			return null;
+		}
 
 		const json = await res.json();
 		return json.data?.Media?.coverImage?.extraLarge || null;
 	} catch (error) {
-		logger.error("AniList API Error:", error);
+		if (error instanceof DOMException && error.name === "AbortError") {
+			logger.error("AniList API Error: request timed out");
+		} else {
+			logger.error("AniList API Error:", error);
+		}
 		return null;
 	}
 }
