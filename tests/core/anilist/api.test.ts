@@ -1,7 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchAnilistCover } from "../../../src/core/anilist/api";
 
-const jsonResponse = (body: unknown) => ({ json: async () => body });
+const jsonResponse = (body: unknown) => ({
+	ok: true,
+	json: async () => body,
+});
 
 let fetchMock: ReturnType<typeof vi.fn>;
 

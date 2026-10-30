@@ -116,18 +116,34 @@ export default defineBackground(() => {
 
 	browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 		const targetUrl = changeInfo.url || tab.url;
-		if (targetUrl?.startsWith(MOBILE_REDIRECT_URI)) {
-			browser.tabs.remove(tabId).catch(() => {});
+		if (!targetUrl) return;
 
-			processLocalhostRedirect(targetUrl).then(async (result) => {
-				if (result.success && result.token) {
-					await browser.storage.local.remove("auth_error");
-					await gateway.connect();
-				} else if (!result.success && result.error) {
-					await browser.storage.local.set({ auth_error: result.error });
-				}
-			});
+		let parsed: URL;
+		try {
+			parsed = new URL(targetUrl);
+		} catch {
+			return;
 		}
+
+		const redirectUri = new URL(MOBILE_REDIRECT_URI);
+		if (
+			parsed.protocol !== redirectUri.protocol ||
+			parsed.hostname !== redirectUri.hostname ||
+			parsed.pathname !== redirectUri.pathname
+		) {
+			return;
+		}
+
+		browser.tabs.remove(tabId).catch(() => {});
+
+		processLocalhostRedirect(targetUrl).then(async (result) => {
+			if (result.success && result.token) {
+				await browser.storage.local.remove("auth_error");
+				await gateway.connect();
+			} else if (!result.success && result.error) {
+				await browser.storage.local.set({ auth_error: result.error });
+			}
+		});
 	});
 
 	browser.storage.onChanged.addListener((changes, areaName) => {
