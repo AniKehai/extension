@@ -20,6 +20,7 @@ export const ALLOWED_COVER_DOMAINS = [
 	"myanimexadmin.online",
 	"aniwatch.cx",
 	"kaa.lt",
+	"voir-anime.to",
 ];
 
 // biome-ignore lint/suspicious/noControlCharactersInRegex: stripping control characters from scraped metadata is the point of this regex

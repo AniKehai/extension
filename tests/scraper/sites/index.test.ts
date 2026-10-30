@@ -4,8 +4,8 @@ import { strategies } from "../../../src/scraper/sites/index";
 const HOSTNAME = /^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$/i;
 
 describe("strategies registry", () => {
-	it("registers the 10 supported sites", () => {
-		expect(strategies).toHaveLength(10);
+	it("registers the 11 supported sites", () => {
+		expect(strategies).toHaveLength(11);
 	});
 
 	describe.each(
