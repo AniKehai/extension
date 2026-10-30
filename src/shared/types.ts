@@ -22,6 +22,7 @@ export type RuntimeMessage =
 	| { type: "SET_PRIVACY_ENABLED"; enabled: boolean }
 	| { type: "STOPPED" }
 	| { type: "FETCH_ANILIST"; anilistId: number }
+	| { type: "FETCH_ANILIST_BY_TITLE"; title: string }
 	| {
 			type: "INFO_UPDATE";
 			title: string;
