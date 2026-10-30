@@ -146,7 +146,7 @@ function extractCoverUrl(): string | null {
 
 	if (coverDiv?.style?.backgroundImage) {
 		const match = coverDiv.style.backgroundImage.match(
-			/url\(['"]?(.*?)['"]?\)/,
+			/url\(['"]?(https:\/\/[^'")]+)['"]?\)/,
 		);
 		if (match?.[1]) return match[1];
 	}
