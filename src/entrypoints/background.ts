@@ -1,4 +1,7 @@
-import { fetchAnilistCover } from "../core/anilist/api";
+import {
+	fetchAniListCoverByTitle,
+	fetchAnilistCover,
+} from "../core/anilist/api";
 import {
 	loginWithDiscord,
 	processLocalhostRedirect,
@@ -298,6 +301,12 @@ export default defineBackground(() => {
 					return;
 				}
 
+				if (message.type === "FETCH_ANILIST_BY_TITLE") {
+					const coverUrl = await fetchAniListCoverByTitle(message.title);
+					sendResponse({ coverUrl });
+					return;
+				}
+
 				if (message.type === "INFO_UPDATE") {
 					currentAnimeState.title = message.title;
 					currentAnimeState.episode = message.episode;
@@ -332,7 +341,8 @@ export default defineBackground(() => {
 				message.type === "SET_ACTIVITY_ENABLED" ||
 				message.type === "SET_PRIVACY_ENABLED" ||
 				message.type === "GET_STATUS" ||
-				message.type === "FETCH_ANILIST"
+				message.type === "FETCH_ANILIST" ||
+				message.type === "FETCH_ANILIST_BY_TITLE"
 			) {
 				return true;
 			}

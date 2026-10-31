@@ -1,0 +1,13 @@
+<meta property="og:image" content="https://voiranime.to/images/anime/cover.jpg">
+<nav class="c-breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><a href="/anime/one-piece">One Piece</a></li>
+    <li><a href="/anime/one-piece/episode-1000">Episode 1000</a></li>
+  </ol>
+</nav>
+<select class="single-chapter-select">
+  <option value="999">999</option>
+  <option value="1000" selected="selected">1000</option>
+  <option value="1001">1001</option>
+</select>
