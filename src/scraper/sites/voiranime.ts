@@ -23,13 +23,10 @@ function fetchCoverFromAniList(title: string): void {
 
 	isFetching = true;
 
-	const searchTitle = title.split("(VF)")[0]?.trim() ?? title;
-	logger.log(searchTitle);
-
 	browser.runtime
 		.sendMessage({
 			type: "FETCH_ANILIST_BY_TITLE",
-			title: searchTitle,
+			title: title,
 		})
 		.then((response: { coverUrl: string }) => {
 			if (response?.coverUrl) {
@@ -38,12 +35,12 @@ function fetchCoverFromAniList(title: string): void {
 				fetchFailed = false;
 				logger.log(cachedCoverUrl, retryCount, fetchFailed);
 			} else {
-				scheduleRetry(searchTitle);
+				scheduleRetry(title);
 			}
 		})
 		.catch((error) => {
 			logger.error("AniList:", error.message);
-			scheduleRetry(searchTitle);
+			scheduleRetry(title);
 		})
 		.finally(() => {
 			isFetching = false;
@@ -80,7 +77,8 @@ export const voiranimeStrategy: AnimeSite = {
 
 		let coverUrl: string | null = null;
 
-		const title = titleElement?.textContent?.trim() ?? null;
+		const title =
+			titleElement?.textContent?.trim().split("(VF)")[0]?.trim() ?? null;
 
 		if (title && title !== currentTitle) {
 			currentTitle = title;
