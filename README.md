@@ -14,8 +14,8 @@ A lightweight, standalone browser extension that shows the anime you are watchin
 ![Version](https://img.shields.io/github/v/release/AniKehai/extension?style=flat)
 
 <!-- DOWNLOADS:START -->
-![GitHub Downloads](https://img.shields.io/badge/github_downloads-401-blue?style=flat&labelColor=555555)
-![Firefox Weekly Downloads](https://img.shields.io/badge/firefox_weekly_downloads-14-blue?style=flat&labelColor=555555)
+![GitHub Downloads](https://img.shields.io/badge/github_downloads-408-blue?style=flat&labelColor=555555)
+![Firefox Weekly Downloads](https://img.shields.io/badge/firefox_weekly_downloads-13-blue?style=flat&labelColor=555555)
 ![Firefox Active Users](https://img.shields.io/badge/firefox_active_users-27-blue?style=flat&labelColor=555555)
 <!-- DOWNLOADS:END -->
 
