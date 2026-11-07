@@ -22,26 +22,3 @@ web-ext.config.ts
 *.njsproj
 *.sln
 *.sw?
-
-# snapshots
-project-snapshot.md
-snapshot.ps1
-snapshot.sh
-
-# tests
-coverage
-playwright-report
-test-results
-
-# docker
-.env
-.env.*
-!.env.example
-
-# audit reports
-SECURITY_AUDIT_REPORT.md
-
-# claude
-.claude/
-CLAUDE.md
-scripts/nim-workflow.ts
