@@ -38,12 +38,6 @@ export default defineConfig({
 	}),
 	modules: ["@wxt-dev/module-react"],
 	zip: {
-		excludeSources: [
-			"coverage",
-			"docs",
-			"playwright-report",
-			"project-snapshot.md",
-			"snapshot.sh",
-		],
+		excludeSources: ["docs", "project-snapshot.md", "snapshot.sh"],
 	},
 });
