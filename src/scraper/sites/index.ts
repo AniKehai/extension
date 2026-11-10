@@ -1,3 +1,4 @@
+import { anigumStrategy } from "./anigum";
 import { anikotoStrategy } from "./anikoto";
 import { animepaheStrategy } from "./animepahe";
 import { animexStrategy } from "./animex";
@@ -22,4 +23,5 @@ export const strategies = [
 	animexStrategy,
 	miruroV2Strategy,
 	voiranimeStrategy,
+	anigumStrategy,
 ];
