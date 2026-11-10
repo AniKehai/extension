@@ -11,8 +11,10 @@ export const MAX_STATE_LENGTH = 128;
 export const MAX_COVER_URL_LENGTH = 2048;
 
 export const ALLOWED_COVER_DOMAINS = [
-	// AniList media CDN
+	// media CDN
 	"anilist.co",
+	"cdn.myanimelist.net",
+	"image.tmdb.org",
 	// Site owned image hosts
 	"cdn.anipixcdn.co",
 	"aniwaves.ru",
