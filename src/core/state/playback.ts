@@ -66,7 +66,8 @@ export function evaluateDiscordUpdate(
 	const hasInfoChanged =
 		currentAnimeState.title !== lastBroadcast.title ||
 		currentAnimeState.episode !== lastBroadcast.episode ||
-		currentAnimeState.coverUrl !== lastBroadcast.coverUrl;
+		currentAnimeState.coverUrl !== lastBroadcast.coverUrl ||
+		currentAnimeState.episodeName !== lastBroadcast.episodeName;
 
 	const hasStateChanged = currentAnimeState.isPaused !== lastBroadcast.isPaused;
 
