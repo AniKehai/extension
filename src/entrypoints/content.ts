@@ -143,6 +143,17 @@ export default defineContentScript({
 					});
 
 					coordinationChannel.postMessage({ type: "INFO_UPDATE_SENT" });
+
+					if (metaStrategy.iframe_src.length === 0) {
+						const stats = metaStrategy.getProgressStats();
+						send({
+							type: "TIME_UPDATE",
+							currentMs: stats.currentMs,
+							durationMs: stats.durationMs,
+							isPaused: stats.isPaused ?? true,
+						});
+						coordinationChannel.postMessage({ type: "TIME_UPDATE_SENT" });
+					}
 				}
 			} catch (err) {
 				logger.error("DOM scraping error:", err);
