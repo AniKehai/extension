@@ -32,12 +32,15 @@ Website: [anikehai.vercel.app](https://anikehai.vercel.app/) has install guides,
 **Firefox (Desktop & Android)**
 Open the [Firefox Add-ons page](https://addons.mozilla.org/en-US/firefox/addon/anikehai/) and click **Add to Firefox**.
 
-**Chrome / Edge (Desktop)**
+**Microsoft Edge (Desktop & Android)**
+Open the [Edge Add-ons page](https://microsoftedge.microsoft.com/addons/detail/anikehai/dakljfkcpimaaolpikgogaenlikiemha) and click **Get**.
+
+**Chrome (Desktop)**
 Not in the Chrome Web Store yet, so install it by hand:
 
-1. Download the `chrome` zip (or the `edge` zip for Edge) from the [latest release](https://github.com/AniKehai/extension/releases/latest).
+1. Download the `chrome` zip from the [latest release](https://github.com/AniKehai/extension/releases/latest).
 2. Unzip it into a normal folder.
-3. Open `chrome://extensions` (or `edge://extensions`) and turn on **Developer mode**.
+3. Open `chrome://extensions` and turn on **Developer mode**.
 4. Click **Load unpacked** and pick the unzipped folder.
 
 **Android (Kiwi / Lemur)**
