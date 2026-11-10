@@ -12,9 +12,11 @@ A clear and concise description of the problem (e.g., the timer is stuck, Discor
 
 **Affected site**
 Which streaming site were you watching on? (e.g., anikototv.to, animepahe.pw)
+
 - Site URL:
 
 **To reproduce**
+
 1. Go to '...'
 2. Click on '...'
 3. Scroll down to '...'
@@ -29,6 +31,7 @@ How to turn logs on: open the extension's background service worker console and 
 (see https://github.com/AniKehai/extension/blob/main/docs/troubleshooting.md#how-to-turn-on-logs).
 
 **Environment**
+
 - OS: [e.g. Windows 11, macOS, Linux, Android]
 - Browser: [e.g. Chrome, Firefox, Edge, Kiwi]
 - Extension version: [shown at the bottom of the popup]

@@ -58,6 +58,7 @@ export const mysiteStrategy: AnimeSite = {
 ```
 
 Rules:
+
 - Off a watch page, return `null` for title and episode. The content script then sends `STOPPED`. If your selectors also match the home page, check `window.location.pathname` first (see `miruro.ts`).
 - Never throw for a missing element. Use `?.` and return `null`.
 - `getStandardVideoStats()` handles a normal `<video>` and JW Player. Only write your own `getProgressStats` for an unusual player (see `animex.ts`).

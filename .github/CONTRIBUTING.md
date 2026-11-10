@@ -33,6 +33,7 @@ fix: stop timer drifting after pausing
 ```
 
 **Code**
+
 - Biome formats and lints. Run `bun run lint:fix` instead of formatting by hand.
 - TypeScript only. Avoid `any`; if you must, add a `// biome-ignore ...: reason`.
 - Use `logger` from `src/shared/logger.ts`, not `console.log`.
@@ -40,6 +41,7 @@ fix: stop timer drifting after pausing
 - Keep dependencies minimal. Discuss before adding one.
 
 **Never**
+
 - Commit secrets, tokens or `.env` files (Gitleaks scans every PR).
 - Log or expose `discord_token`, or add `host_permissions` for sites we do not support.
 - Edit the `<!-- DOWNLOADS:START -->` block in the README (a bot rewrites it daily).
