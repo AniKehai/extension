@@ -1,86 +1,68 @@
-import { logger } from "../../shared/logger";
 import type { AnimeSite } from "../../shared/types";
 import { getStandardVideoStats } from "../parser";
 
-const ACTIVE_EPISODE_BORDER = "229, 9, 20";
-
-const getActiveEpisodeNumber = (): string | null => {
-	try {
-		const heading = Array.from(document.querySelectorAll("h2")).find(
-			(h) => h.textContent?.trim() === "Episodes",
-		);
-
-		const buttons = heading?.nextElementSibling?.querySelectorAll("button");
-		if (!buttons) return null;
-
-		for (const button of buttons) {
-			const isActive =
-				button.style.borderColor.includes(ACTIVE_EPISODE_BORDER) ||
-				window
-					.getComputedStyle(button)
-					.borderColor.includes(ACTIVE_EPISODE_BORDER);
-			if (!isActive) continue;
-
-			const text = button.textContent?.trim() ?? "";
-			return text.match(/\d+(?:\.\d+)?/)?.[0] ?? null;
-		}
-	} catch (error) {
-		logger.error("Animex: failed to parse active episode", error);
-	}
-	return null;
-};
-
-const getHeroCoverUrl = (): string | null => {
-	for (const el of document.querySelectorAll<HTMLElement>(
-		'div[style*="background-image"]',
-	)) {
-		const url = el.style.backgroundImage.match(
-			/url\(["']?(https?:[^"')]+)["']?\)/,
-		)?.[1];
-		if (url) return url;
-	}
-	return null;
-};
-
-const findShadowVideo = (): HTMLVideoElement | null => {
-	for (const el of document.querySelectorAll("*")) {
-		const video = el.shadowRoot?.querySelector("video");
-		if (video) return video;
-	}
-	return null;
-};
-
 export const animexStrategy: AnimeSite = {
-	domains: ["myanimex.com", "www.myanimex.com"],
-	iframe_src: ["player.mediadelivery.net"],
+	domains: ["animex.one"],
+	iframe_src: [
+		"plyr.animex.one",
+		"flixcloud.cc",
+		"megaplay.buzz",
+		"vidcloud.se",
+	],
 
 	getAnimeMetadata: () => {
-		const title = document.querySelector("h1")?.textContent?.trim();
-		const episodeNumber = getActiveEpisodeNumber();
+		const titleElement = document.querySelector(
+			'a[href^="/anime/"] span.font-semibold.tracking-wide',
+		);
+		const title = titleElement?.textContent?.trim() ?? null;
 
-		return {
-			title: title || null,
-			episode: episodeNumber ? `Episode ${episodeNumber}` : null,
-			episodeName: null,
-			coverUrl: getHeroCoverUrl(),
-		};
-	},
+		const watchingElement = document.querySelector(
+			"span.truncate.text-sm.font-bold.text-white",
+		);
+		let episode: string | null = null;
+		let episodeName: string | null = null;
 
-	getProgressStats: () => {
-		const stats = getStandardVideoStats();
-		if (stats.durationMs > 0) return stats;
-
-		const video = findShadowVideo();
-		if (!video || !Number.isFinite(video.duration) || video.duration <= 0) {
-			return stats;
+		if (watchingElement?.textContent) {
+			const parts = watchingElement.textContent.split(":");
+			if (parts.length >= 2) {
+				episode = parts[0]?.trim() ?? null;
+				episodeName = parts.slice(1).join(":").trim();
+			} else {
+				episode = watchingElement.textContent.trim();
+			}
 		}
 
-		const currentMs = Math.floor(video.currentTime * 1000);
-		const durationMs = Math.floor(video.duration * 1000);
+		if (!episode || !episodeName) {
+			const activeEpisodeBlock = document.querySelector(
+				"button[disabled] .line-clamp-1.font-bold",
+			);
+			if (activeEpisodeBlock?.textContent) {
+				const match = activeEpisodeBlock.textContent.match(/^(\d+)\.\s*(.+)/);
+				if (match) {
+					episode = `Episode ${match[1]}`;
+					episodeName = match[2]?.trim() ?? null;
+				}
+			}
+		}
+
+		if (episodeName) {
+			episodeName = episodeName
+				.replace(/^Release:\s*\d{4}[-/]\d{2}[-/]\d{2}.*?-\s*/i, "")
+				.trim();
+		}
+
+		const coverElement = document.querySelector(
+			'img[alt$=" cover"]',
+		) as HTMLImageElement | null;
+		const coverUrl = coverElement?.src ?? null;
+
 		return {
-			currentMs,
-			durationMs,
-			isPaused: video.paused || video.ended,
+			title,
+			episode,
+			episodeName,
+			coverUrl,
 		};
 	},
+
+	getProgressStats: () => getStandardVideoStats(),
 };
