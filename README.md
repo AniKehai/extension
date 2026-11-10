@@ -70,16 +70,18 @@ Bug reports, new sites, docs and code are all welcome.
 ```bash
 git clone https://github.com/AniKehai/extension.git
 cd AniKehai
-docker compose up --build dev
+bun install
+bunx lefthook install
+bun run dev:chrome
 ```
 
-| I want to...                         | Read                                                 |
-| ------------------------------------ | ---------------------------------------------------- |
-| Set up (Docker or manual), run tests | [docs/development.md](./docs/development.md)         |
-| Understand the code                  | [docs/how-it-works.md](./docs/how-it-works.md)       |
-| Add a streaming site                 | [docs/adding-a-site.md](./docs/adding-a-site.md)     |
-| Fix a problem                        | [docs/troubleshooting.md](./docs/troubleshooting.md) |
-| Know the rules for a PR              | [.github/CONTRIBUTING.md](./.github/CONTRIBUTING.md) |
+| I want to...            | Read                                                 |
+| ----------------------- | ---------------------------------------------------- |
+| Set up and run          | [docs/development.md](./docs/development.md)         |
+| Understand the code     | [docs/how-it-works.md](./docs/how-it-works.md)       |
+| Add a streaming site    | [docs/adding-a-site.md](./docs/adding-a-site.md)     |
+| Fix a problem           | [docs/troubleshooting.md](./docs/troubleshooting.md) |
+| Know the rules for a PR | [.github/CONTRIBUTING.md](./.github/CONTRIBUTING.md) |
 
 ## License
 

@@ -18,8 +18,8 @@ Thanks for helping out! This is the whole rulebook on one page.
 
 1. Fork, clone, and set up with [docs/development.md](../docs/development.md).
 2. Branch from `main`: `feat/short-name` or `fix/short-name`.
-3. Make one small, focused change. Add or update tests.
-4. Run `bun run validate` (lint + typecheck + tests). Changed the build, manifest or UI flow? Also run `bun run test:e2e`.
+3. Make one small, focused change.
+4. Run `bun run validate` (lint + typecheck). Changed the build, manifest or UI flow? Also run `bun run build:chrome`.
 5. Commit with [Conventional Commits](https://www.conventionalcommits.org/).
 6. Open a PR into `main` and fill in the template. CI must be green.
 
@@ -39,12 +39,6 @@ fix: stop timer drifting after pausing
 - Site strategies return `null` for missing elements and never throw.
 - Keep dependencies minimal. Discuss before adding one.
 
-**Tests**
-- Every test lives in `tests/`, mirroring `src/` (`src/core/state/playback.ts` is tested by `tests/core/state/playback.test.ts`). Keep `src/` free of test files.
-- A bug fix needs a test that fails without the fix.
-- A new site needs a fixture, a unit test, an E2E entry and a health entry.
-- Coverage minimums: 80% lines/functions/statements, 70% branches.
-
 **Never**
 - Commit secrets, tokens or `.env` files (Gitleaks scans every PR).
 - Log or expose `discord_token`, or add `host_permissions` for sites we do not support.
@@ -55,13 +49,11 @@ fix: stop timer drifting after pausing
 
 Lefthook (`bunx lefthook install`) runs on your machine; CI runs the same checks again.
 
-| When                     | What                                                                               |
-| ------------------------ | ---------------------------------------------------------------------------------- |
-| `git commit`             | Biome fix on staged files, typecheck, commit message check                         |
-| `git push`               | Unit tests                                                                         |
-| PR                       | `ci.yml`: lint, typecheck, tests with coverage, E2E, build (Chrome, Firefox, Edge) |
-| PR touching Docker files | `docker.yml`: Dockerfile lint and the full suite in containers                     |
-| PR and weekly            | `security.yml`: `bun audit` and Gitleaks                                           |
+| When          | What                                                       |
+| ------------- | ---------------------------------------------------------- |
+| `git commit`  | Biome fix on staged files, typecheck, commit message check |
+| PR            | `ci.yml`: lint, typecheck, build (Chrome, Firefox, Edge)   |
+| PR and weekly | `security.yml`: `bun audit` and Gitleaks                   |
 
 Please do not use `--no-verify`. CI will fail anyway.
 

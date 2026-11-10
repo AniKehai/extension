@@ -27,24 +27,14 @@ You will see `[INFO]`, `[WARN]` and `[ERROR]` lines, including the exact presenc
 
 ## For contributors
 
-| Symptom                                         | Fix                                                                                                              |
-| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `Cannot find module '.wxt/tsconfig.json'`       | `bunx wxt prepare`                                                                                               |
-| Install fails on the Node version               | Use Node >= 26 (the Docker image already does)                                                                   |
-| Biome complains about everything                | `bun run lint:fix`. Check your editor uses LF endings and tabs.                                                  |
-| Hooks do not run                                | `bunx lefthook install`                                                                                          |
-| Commit rejected                                 | Use `type: message`, see [CONTRIBUTING](../.github/CONTRIBUTING.md#rules).                                       |
-| Dev browser does not open                       | Load `.output/chrome-mv3-dev` by hand, see [Development](./development.md).                                      |
-| Docker: files owned by root (Linux)             | `export HOST_UID=$(id -u) HOST_GID=$(id -g)` before running compose.                                             |
-| Docker: port 3000 busy or stale dependencies    | `docker compose down`, or `bun run docker:clean` and rebuild.                                                    |
-| E2E: "run `bun run build:chrome` first"         | Use `bun run test:e2e`, which builds first.                                                                      |
-| E2E cannot find Chromium                        | `bun run test:e2e:install`                                                                                       |
-| Coverage below the minimum                      | `bun run test:coverage`, open `coverage/index.html`, cover the red lines.                                        |
-| Version test fails                              | The manifest version does not match `package.json`. Bump only `package.json`.                                    |
-| `index.test.ts` count fails                     | You added or removed a site. Update the `toHaveLength(...)` number.                                              |
-| "domain is shared" or "site and player" failure | Two strategies overlap. Use a more specific hostname.                                                            |
-| Health check fails for one site                 | A selector probably broke. Fix the strategy and refresh the fixture. "Skipped" means Cloudflare blocked the run. |
-| A test leaks state into another                 | `vi.resetModules()` for module-level caches; restore fake timers in `afterEach`.                                 |
+| Symptom                                   | Fix                                                                         |
+| ----------------------------------------- | --------------------------------------------------------------------------- |
+| `Cannot find module '.wxt/tsconfig.json'` | `bunx wxt prepare`                                                          |
+| Install fails on the Node version         | Use Node >= 26                                                              |
+| Biome complains about everything          | `bun run lint:fix`. Check your editor uses LF endings and tabs.             |
+| Hooks do not run                          | `bunx lefthook install`                                                     |
+| Commit rejected                           | Use `type: message`, see [CONTRIBUTING](../.github/CONTRIBUTING.md#rules).  |
+| Dev browser does not open                 | Load `.output/chrome-mv3-dev` by hand, see [Development](./development.md). |
 
 ## Debugging a site strategy
 
@@ -52,7 +42,7 @@ You will see `[INFO]`, `[WARN]` and `[ERROR]` lines, including the exact presenc
 2. Turn on logs and look for `DOM scraping error`.
 3. Check that the **player iframe's** domain is in `iframe_src` (right-click the video, Inspect).
 4. Make sure it is a _watch_ page. Strategies must return `null` elsewhere.
-5. Update the fixture and run `bunx vitest run tests/scraper/sites/<site>.test.ts`.
+5. Run `bun run dev:chrome` and verify the Discord status updates.
 
 ## Debugging Discord
 

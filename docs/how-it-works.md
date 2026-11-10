@@ -53,7 +53,7 @@ The video usually lives in an iframe on another domain, and a script in the main
 | Flow     | When                                                                              | How                                                                                                                                                  |
 | -------- | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Desktop  | Browser has the `identity` API (Chrome only, the manifest requests it only there) | `launchWebAuthFlow` handles the redirect                                                                                                             |
-| Fallback | No`identity` API (Firefox, Edge, Kiwi)                                            | Opens a tab. Discord redirects to `http://127.0.0.1/discord-auth?code=...`, the background spots that URL, closes the tab and finishes the exchange. |
+| Fallback | No `identity` API (Firefox, Edge, Kiwi)                                           | Opens a tab. Discord redirects to `http://127.0.0.1/discord-auth?code=...`, the background spots that URL, closes the tab and finishes the exchange. |
 
 The access token is refreshed automatically, and simultaneous refreshes share one request.
 
@@ -96,9 +96,7 @@ src/
   core/          anilist/, discord/ (auth, gateway, assets), state/playback.ts
   scraper/       extractor.ts, parser.ts, sites/ (one strategy per site + index.ts)
   shared/        constants.ts, logger.ts, types.ts
-tests/           mirrors src/, plus e2e/, health/, fixtures/, helpers/, setup.ts
-docker/, Dockerfile, docker-compose.yml, wxt.docker.config.ts    Docker setup
 .github/         CI workflows, issue and PR templates, community files
 ```
 
-Tunable values are in `src/shared/constants.ts`: `CHECK_ACTIVITY_INTERVAL` (5 s), `RESET_ACTIVITY_TIMEOUT` (10 s, must stay longer than the interval; a test enforces it), `APPLICATION_ID`, `DISCORD_SERVER_URL`.
+Tunable values are in `src/shared/constants.ts`: `CHECK_ACTIVITY_INTERVAL` (5 s), `RESET_ACTIVITY_TIMEOUT` (10 s, must stay longer than the interval), `APPLICATION_ID`, `DISCORD_SERVER_URL`.
