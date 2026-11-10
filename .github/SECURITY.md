@@ -38,6 +38,7 @@ AniKehai operates as a browser extension that interacts with potentially untrust
 ### Out-of-Scope
 
 The following scenarios are considered out of scope and do not pose a vulnerability to the extension itself:
+
 - **Public Client IDs:** The Discord Application ID (`1526911509878538340`) and the Chrome Web Store extension keys are inherently public and cannot be used maliciously without a user's explicit OAuth consent.
 - **Self-Exploitation:** Attacks that require the user to open Developer Tools and manually modify their own local extension files or local storage state.
 - **Third-Party Site Compromise:** Security flaws, malware, or vulnerabilities present on the streaming websites themselves (e.g., a malicious iframe source).

@@ -7,12 +7,14 @@ We as members, contributors, and maintainers of the AniKehai project pledge to f
 ## Our Standards
 
 To maintain a positive environment, we expect all community members to:
+
 - Demonstrate empathy and respect toward others.
 - Give and gracefully accept constructive feedback during code reviews.
 - Focus on what is best for the overall AniKehai community and project stability.
 - Use welcoming and inclusive language.
 
 Examples of unacceptable behavior include:
+
 - Trolling, insulting, or making derogatory comments.
 - Harassment of any kind, public or private.
 - Publishing others' private information without explicit permission.
@@ -31,6 +33,7 @@ Project maintainers reserve the right and responsibility to remove, edit, or rej
 ## Enforcement Guidelines
 
 Project maintainers will follow these guidelines when determining consequences for violations:
+
 1. **Correction**: A private conversation providing clarity around the violation and an explanation of why the behavior was inappropriate.
 2. **Warning**: A formal warning with potential consequences for continued behavior.
 3. **Temporary Ban**: A temporary suspension from interacting with the repository or community spaces.

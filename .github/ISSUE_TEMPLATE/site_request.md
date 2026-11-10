@@ -15,12 +15,14 @@ What is the name of the streaming site? (e.g., Crunchyroll, Aniwave)
 
 **Site URLs**
 Please provide the main URL, plus any known mirror/proxy links.
+
 - Main URL:
 - Alternate URLs:
 - Example episode (watch page) URL:
 
 **Video player (if you know it)**
 Does the video play on the page itself, or inside an iframe from another domain? If it is an iframe, what is that domain?
+
 - Player domain(s):
 
 **Why should we add it?**
