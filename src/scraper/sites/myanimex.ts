@@ -50,7 +50,7 @@ const findShadowVideo = (): HTMLVideoElement | null => {
 	return null;
 };
 
-export const animexStrategy: AnimeSite = {
+export const myanimexStrategy: AnimeSite = {
 	domains: ["myanimex.com", "www.myanimex.com"],
 	iframe_src: ["player.mediadelivery.net"],
 
