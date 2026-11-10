@@ -16,16 +16,15 @@ Closes #<!-- issue number, or delete this line -->
 ## Checklist
 
 - [ ] `bun run validate` passes
-- [ ] Tests added or updated
+- [ ] `bun run build:chrome` passes
 - [ ] Docs updated if setup or behavior changed
 - [ ] Tried it in a browser (for behavior changes)
 
 ### Only for new sites
 
 - [ ] Strategy in `src/scraper/sites/` and registered in `index.ts`
-- [ ] Fixture `tests/fixtures/<site>/watch.html.fixture` and unit test `tests/scraper/sites/<site>.test.ts`
-- [ ] Entries in `tests/e2e/content-script.spec.ts` and `tests/health/live-dom.spec.ts`
-- [ ] Site count updated in `tests/scraper/sites/index.test.ts`
+- [ ] `bun run validate` passes
+- [ ] `bun run build:chrome` passes
 
 ## Screenshots
 
