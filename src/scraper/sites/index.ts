@@ -1,6 +1,7 @@
 import { anigumStrategy } from "./anigum";
 import { anikotoStrategy } from "./anikoto";
 import { animepaheStrategy } from "./animepahe";
+import { animexStrategy } from "./animex";
 import { aniwatchStrategy } from "./aniwatch";
 import { aniwaveStrategy } from "./aniwave";
 import { banimeStrategy } from "./banime";
@@ -26,4 +27,5 @@ export const strategies = [
 	voiranimeStrategy,
 	anigumStrategy,
 	banimeStrategy,
+	animexStrategy,
 ];
