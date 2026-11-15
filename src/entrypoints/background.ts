@@ -3,6 +3,7 @@ import {
 	fetchAnilistCover,
 } from "../core/anilist/api";
 import {
+	fetchDiscordUser,
 	loginWithDiscord,
 	processLocalhostRedirect,
 } from "../core/discord/auth";
@@ -214,6 +215,12 @@ export default defineBackground(() => {
 					return;
 				}
 
+				if (message.type === "FETCH_DISCORD_USER") {
+					const user = await fetchDiscordUser();
+					sendResponse({ user });
+					return;
+				}
+
 				if (message.type === "LOGOUT_DISCORD") {
 					if (currentAnimeState.title !== null) {
 						try {
@@ -354,7 +361,8 @@ export default defineBackground(() => {
 				message.type === "SET_PRIVACY_ENABLED" ||
 				message.type === "GET_STATUS" ||
 				message.type === "FETCH_ANILIST" ||
-				message.type === "FETCH_ANILIST_BY_TITLE"
+				message.type === "FETCH_ANILIST_BY_TITLE" ||
+				message.type === "FETCH_DISCORD_USER"
 			) {
 				return true;
 			}

@@ -23,6 +23,7 @@ export type RuntimeMessage =
 	| { type: "STOPPED" }
 	| { type: "FETCH_ANILIST"; anilistId: number }
 	| { type: "FETCH_ANILIST_BY_TITLE"; title: string }
+	| { type: "FETCH_DISCORD_USER" }
 	| {
 			type: "INFO_UPDATE";
 			title: string;
@@ -85,4 +86,19 @@ export interface LoginResponse {
 
 export interface SimpleResponse {
 	success: boolean;
+}
+
+export interface DiscordUser {
+	id: string;
+	username: string;
+	global_name?: string | null;
+	avatar?: string | null;
+	discriminator: string;
+	public_flags?: number;
+	flags?: number;
+	banner?: string | null;
+	accent_color?: number | null;
+	locale?: string;
+	mfa_enabled?: boolean;
+	premium_type?: number;
 }

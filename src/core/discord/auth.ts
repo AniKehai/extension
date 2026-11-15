@@ -1,6 +1,6 @@
 import { APPLICATION_ID, MOBILE_REDIRECT_URI } from "../../shared/constants";
 import { logger } from "../../shared/logger";
-import type { LoginResponse } from "../../shared/types";
+import type { DiscordUser, LoginResponse } from "../../shared/types";
 
 function base64Url(bytes: Uint8Array | ArrayBuffer) {
 	return btoa(String.fromCharCode(...new Uint8Array(bytes)))
@@ -120,6 +120,61 @@ export function refreshDiscordToken(): Promise<string | null> {
 		});
 	}
 	return inFlightRefresh;
+}
+
+export async function fetchDiscordUser(): Promise<DiscordUser | null> {
+	const storage = await browser.storage.local.get("discord_token");
+	const token = storage.discord_token;
+
+	if (!token || typeof token !== "string") {
+		logger.warn("No Discord token found for fetching user");
+		return null;
+	}
+
+	try {
+		const res = await fetch("https://discord.com/api/users/@me", {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		if (!res.ok) {
+			if (res.status === 401) {
+				logger.warn("Discord token expired, attempting refresh");
+				const newToken = await refreshDiscordToken();
+				if (newToken) {
+					return fetchDiscordUser(); // Retry with new token
+				}
+			}
+			logger.error(
+				"Failed to fetch Discord user:",
+				res.status,
+				await res.text(),
+			);
+			return null;
+		}
+
+		return (await res.json()) as DiscordUser;
+	} catch (error) {
+		logger.error("Fetch Discord User Error:", error);
+		return null;
+	}
+}
+
+export function getAvatarUrl(user: DiscordUser, size = 256): string | null {
+	if (!user.avatar) return null;
+	const ext = user.avatar.startsWith("a_") ? "gif" : "png";
+	return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=${size}`;
+}
+
+export function getBannerUrl(user: DiscordUser, size = 512): string | null {
+	if (!user.banner) return null;
+	const ext = user.banner.startsWith("a_") ? "gif" : "png";
+	return `https://cdn.discordapp.com/banners/${user.id}/${user.banner}.${ext}?size=${size}`;
+}
+
+export function getDisplayName(user: DiscordUser): string {
+	return user.global_name ?? user.username;
 }
 
 async function performRefresh(): Promise<string | null> {
