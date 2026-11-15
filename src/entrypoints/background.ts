@@ -104,12 +104,24 @@ export default defineBackground(() => {
 		}
 	}
 
-	browser.runtime.onInstalled.addListener((details) => {
+	browser.runtime.onInstalled.addListener(async (details) => {
 		if (details.reason === "install") {
 			browser.tabs.create({
-				url: browser.runtime.getURL("/popup.html"),
+				url: browser.runtime.getURL("/welcome.html"),
 				active: true,
 			});
+		} else if (details.reason === "update") {
+			const currentVersion = browser.runtime.getManifest().version;
+			const stored = await browser.storage.local.get("lastSeenVersion");
+			const lastSeenVersion = stored.lastSeenVersion;
+
+			if (lastSeenVersion !== currentVersion) {
+				await browser.storage.local.set({ lastSeenVersion: currentVersion });
+				browser.tabs.create({
+					url: browser.runtime.getURL("/changelog.html"),
+					active: true,
+				});
+			}
 		}
 
 		if (details.reason === "install" || details.reason === "update") {
