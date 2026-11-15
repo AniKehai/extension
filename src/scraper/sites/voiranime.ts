@@ -62,7 +62,7 @@ function scheduleRetry(title: string): void {
 }
 
 export const voiranimeStrategy: AnimeSite = {
-	domains: ["voir-anime.to"],
+	domains: ["voiranime.cx"],
 	iframe_src: ["voembed.net", "mfw09.org", "voe.sx", "streamtape.com"],
 
 	getAnimeMetadata: () => {
