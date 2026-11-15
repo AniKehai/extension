@@ -57,20 +57,17 @@ export function SettingsView({ status }: SettingsViewProps) {
 				</motion.button>
 			</div>
 
-			{/* Advanced settings */}
 			<div className="flex flex-col gap-2">
 				<p className="text-[10px] font-semibold text-muted/70 uppercase tracking-wide px-1">
 					Advanced
 				</p>
 				<div className="flex flex-col gap-2">
-					<div className="rounded-2xl border border-white/10 bg-panel-2/60 px-3.5 py-3">
+					<div className="rounded-2xl border border-white/10 bg-panel-2/60 px-3 py-2">
 						<div className="flex items-center justify-between gap-4">
 							<div className="min-w-0">
-								<p className="font-medium text-ink truncate">
-									Reset Activity Timeout
-								</p>
-								<p className="text-[11px] text-muted truncate">
-									Seconds before clearing activity when idle
+								<p className="font-medium text-ink">Clear Status After</p>
+								<p className="text-[11px] text-muted line-clamp-2">
+									How long before removing your status when you stop watching
 								</p>
 							</div>
 							<select
@@ -84,20 +81,18 @@ export function SettingsView({ status }: SettingsViewProps) {
 							>
 								{[1, 2, 3, 4, 5, 10, 15].map((val) => (
 									<option key={val} value={val}>
-										{val}
+										{val}s
 									</option>
 								))}
 							</select>
 						</div>
 					</div>
-					<div className="rounded-2xl border border-white/10 bg-panel-2/60 px-3.5 py-3">
+					<div className="rounded-2xl border border-white/10 bg-panel-2/60 px-3 py-2">
 						<div className="flex items-center justify-between gap-4">
 							<div className="min-w-0">
-								<p className="font-medium text-ink truncate">
-									Check Activity Interval
-								</p>
-								<p className="text-[11px] text-muted truncate">
-									Seconds between activity updates to Discord
+								<p className="font-medium text-ink">Update Status Every</p>
+								<p className="text-[11px] text-muted line-clamp-2">
+									How often to refresh your episode progress on Discord
 								</p>
 							</div>
 							<select
@@ -111,7 +106,7 @@ export function SettingsView({ status }: SettingsViewProps) {
 							>
 								{[1, 2, 3, 4, 5, 10, 15].map((val) => (
 									<option key={val} value={val}>
-										{val}
+										{val}s
 									</option>
 								))}
 							</select>
@@ -124,7 +119,7 @@ export function SettingsView({ status }: SettingsViewProps) {
 				href={DISCORD_SERVER_URL}
 				target="_blank"
 				rel="noreferrer"
-				className="flex items-center justify-between rounded-2xl border border-white/10 bg-panel-2/60 px-3.5 py-2.5 text-[12.5px] font-medium text-ink transition-colors hover:border-dusk/40 mt-4"
+				className="flex items-center justify-between rounded-2xl border border-white/10 bg-panel-2/60 px-3.5 py-2.5 text-[12.5px] font-medium text-ink transition-colors hover:border-dusk/40"
 			>
 				<span className="flex items-center gap-2">
 					<Link size={15} className="text-dusk" />
