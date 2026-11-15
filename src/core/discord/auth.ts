@@ -56,6 +56,9 @@ export async function loginWithDiscord(): Promise<LoginResponse> {
 
 			await exchangeCodeForToken(code, redirectUri, verifier);
 			await browser.storage.local.remove("oauth_verifier");
+
+			await fetchDiscordUser(true);
+
 			return { status: "token" };
 		}
 
@@ -122,7 +125,35 @@ export function refreshDiscordToken(): Promise<string | null> {
 	return inFlightRefresh;
 }
 
-export async function fetchDiscordUser(): Promise<DiscordUser | null> {
+const USER_DATA_KEY = "discord_user_data";
+
+export async function getCachedDiscordUser(): Promise<DiscordUser | null> {
+	const storage = await browser.storage.local.get(USER_DATA_KEY);
+	const userData = storage[USER_DATA_KEY];
+	if (userData && typeof userData === "object") {
+		return userData as DiscordUser;
+	}
+	return null;
+}
+
+export async function setCachedDiscordUser(user: DiscordUser): Promise<void> {
+	await browser.storage.local.set({ [USER_DATA_KEY]: user });
+}
+
+export async function clearCachedDiscordUser(): Promise<void> {
+	await browser.storage.local.remove(USER_DATA_KEY);
+}
+
+export async function fetchDiscordUser(
+	forceRefresh = false,
+): Promise<DiscordUser | null> {
+	if (!forceRefresh) {
+		const cached = await getCachedDiscordUser();
+		if (cached) {
+			return cached;
+		}
+	}
+
 	const storage = await browser.storage.local.get("discord_token");
 	const token = storage.discord_token;
 
@@ -143,7 +174,7 @@ export async function fetchDiscordUser(): Promise<DiscordUser | null> {
 				logger.warn("Discord token expired, attempting refresh");
 				const newToken = await refreshDiscordToken();
 				if (newToken) {
-					return fetchDiscordUser(); // Retry with new token
+					return fetchDiscordUser(true);
 				}
 			}
 			logger.error(
@@ -151,13 +182,15 @@ export async function fetchDiscordUser(): Promise<DiscordUser | null> {
 				res.status,
 				await res.text(),
 			);
-			return null;
+			return getCachedDiscordUser();
 		}
 
-		return (await res.json()) as DiscordUser;
+		const userData = (await res.json()) as DiscordUser;
+		await setCachedDiscordUser(userData);
+		return userData;
 	} catch (error) {
 		logger.error("Fetch Discord User Error:", error);
-		return null;
+		return getCachedDiscordUser();
 	}
 }
 
@@ -261,6 +294,8 @@ export async function processLocalhostRedirect(
 			verifier,
 		);
 		await browser.storage.local.remove("oauth_verifier");
+
+		await fetchDiscordUser(true);
 
 		return { success: true, token };
 	} catch (e) {

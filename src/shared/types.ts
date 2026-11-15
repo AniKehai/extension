@@ -20,6 +20,8 @@ export type RuntimeMessage =
 	| { type: "LOGOUT_DISCORD" }
 	| { type: "SET_ACTIVITY_ENABLED"; enabled: boolean }
 	| { type: "SET_PRIVACY_ENABLED"; enabled: boolean }
+	| { type: "SET_RESET_ACTIVITY_TIMEOUT"; value: number }
+	| { type: "SET_CHECK_ACTIVITY_INTERVAL"; value: number }
 	| { type: "STOPPED" }
 	| { type: "FETCH_ANILIST"; anilistId: number }
 	| { type: "FETCH_ANILIST_BY_TITLE"; title: string }
@@ -77,6 +79,8 @@ export interface StatusResponse {
 	privacyEnabled?: boolean;
 	authError?: string | null;
 	currentAnime: AnimeState | null;
+	resetActivityTimeout?: number;
+	checkActivityInterval?: number;
 }
 
 export interface LoginResponse {

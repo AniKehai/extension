@@ -6,7 +6,9 @@ import {
 	loginDiscord,
 	logoutDiscord,
 	setActivityEnabled,
+	setCheckActivityInterval,
 	setPrivacyEnabled,
+	setResetActivityTimeout,
 } from "../lib/runtime-messages";
 
 const POLL_INTERVAL_MS = 3000;
@@ -16,6 +18,8 @@ export function useExtensionStatus() {
 	const [isGatewayReady, setIsGatewayReady] = useState(false);
 	const [activityEnabled, setActivityEnabledState] = useState(true);
 	const [privacyEnabled, setPrivacyEnabledState] = useState(false);
+	const [resetActivityTimeout, setResetActivityTimeoutState] = useState(10);
+	const [checkActivityInterval, setCheckActivityIntervalState] = useState(5);
 	const [currentAnime, setCurrentAnime] = useState<AnimeState | null>(null);
 	const [isBootstrapping, setIsBootstrapping] = useState(true);
 	const [isAuthLoading, setIsAuthLoading] = useState(false);
@@ -30,6 +34,8 @@ export function useExtensionStatus() {
 			setIsGatewayReady(res.isGatewayReady);
 			setActivityEnabledState(res.activityEnabled ?? true);
 			setPrivacyEnabledState(res.privacyEnabled ?? false);
+			setResetActivityTimeoutState(res.resetActivityTimeout ?? 10);
+			setCheckActivityIntervalState(res.checkActivityInterval ?? 5);
 
 			if (res.authError) {
 				setError(res.authError);
@@ -121,11 +127,41 @@ export function useExtensionStatus() {
 		[privacyEnabled],
 	);
 
+	const updateResetActivityTimeout = useCallback(
+		async (next: number) => {
+			const previous = resetActivityTimeout;
+			setResetActivityTimeoutState(next);
+			try {
+				await setResetActivityTimeout(next);
+			} catch (err) {
+				logger.error("[popup] failed to update reset activity timeout", err);
+				setResetActivityTimeoutState(previous);
+			}
+		},
+		[resetActivityTimeout],
+	);
+
+	const updateCheckActivityInterval = useCallback(
+		async (next: number) => {
+			const previous = checkActivityInterval;
+			setCheckActivityIntervalState(next);
+			try {
+				await setCheckActivityInterval(next);
+			} catch (err) {
+				logger.error("[popup] failed to update check activity interval", err);
+				setCheckActivityIntervalState(previous);
+			}
+		},
+		[checkActivityInterval],
+	);
+
 	return {
 		isAuthenticated,
 		isGatewayReady,
 		activityEnabled,
 		privacyEnabled,
+		resetActivityTimeout,
+		checkActivityInterval,
 		currentAnime,
 		isBootstrapping,
 		isAuthLoading,
@@ -136,6 +172,8 @@ export function useExtensionStatus() {
 		logout,
 		toggleActivity,
 		togglePrivacy,
+		updateResetActivityTimeout,
+		updateCheckActivityInterval,
 	};
 }
 

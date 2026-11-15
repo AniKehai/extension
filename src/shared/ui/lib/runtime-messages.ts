@@ -23,3 +23,21 @@ export function setActivityEnabled(enabled: boolean): Promise<SimpleResponse> {
 export function setPrivacyEnabled(enabled: boolean): Promise<SimpleResponse> {
 	return browser.runtime.sendMessage({ type: "SET_PRIVACY_ENABLED", enabled });
 }
+
+export function setResetActivityTimeout(
+	value: number,
+): Promise<SimpleResponse> {
+	return browser.runtime.sendMessage({
+		type: "SET_RESET_ACTIVITY_TIMEOUT",
+		value,
+	});
+}
+
+export function setCheckActivityInterval(
+	value: number,
+): Promise<SimpleResponse> {
+	return browser.runtime.sendMessage({
+		type: "SET_CHECK_ACTIVITY_INTERVAL",
+		value,
+	});
+}

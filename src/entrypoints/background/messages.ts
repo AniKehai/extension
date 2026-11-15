@@ -2,7 +2,11 @@ import {
 	fetchAniListCoverByTitle,
 	fetchAnilistCover,
 } from "../../core/anilist/api";
-import { fetchDiscordUser, loginWithDiscord } from "../../core/discord/auth";
+import {
+	clearCachedDiscordUser,
+	fetchDiscordUser,
+	loginWithDiscord,
+} from "../../core/discord/auth";
 import {
 	activityEnabled,
 	clearAnimeState,
@@ -18,6 +22,7 @@ import {
 	handleInfoUpdate,
 	publishPresence,
 	settingsReady,
+	settingsState,
 	shouldUpdatePresence,
 } from "./state";
 
@@ -80,6 +85,7 @@ export function setupMessageListener() {
 							"discord_refresh_token",
 							"discord_token_expires_at",
 						]);
+						await clearCachedDiscordUser();
 					} finally {
 						authState.isLoggingOut = false;
 					}
@@ -120,6 +126,22 @@ export function setupMessageListener() {
 					return;
 				}
 
+				if (message.type === "SET_RESET_ACTIVITY_TIMEOUT") {
+					const value = Math.max(1, Math.floor(Number(message.value)));
+					settingsState.resetActivityTimeout = value;
+					await browser.storage.local.set({ reset_activity_timeout: value });
+					sendResponse({ success: true });
+					return;
+				}
+
+				if (message.type === "SET_CHECK_ACTIVITY_INTERVAL") {
+					const value = Math.max(1, Math.floor(Number(message.value)));
+					settingsState.checkActivityInterval = value;
+					await browser.storage.local.set({ check_activity_interval: value });
+					sendResponse({ success: true });
+					return;
+				}
+
 				if (message.type === "GET_STATUS") {
 					const storage = await browser.storage.local.get([
 						"discord_token",
@@ -135,6 +157,8 @@ export function setupMessageListener() {
 						authError: storage.auth_error || null,
 						currentAnime:
 							currentAnimeState.title !== null ? currentAnimeState : null,
+						resetActivityTimeout: settingsState.resetActivityTimeout,
+						checkActivityInterval: settingsState.checkActivityInterval,
 					});
 					return;
 				}
@@ -178,6 +202,8 @@ export function setupMessageListener() {
 				message.type === "LOGOUT_DISCORD" ||
 				message.type === "SET_ACTIVITY_ENABLED" ||
 				message.type === "SET_PRIVACY_ENABLED" ||
+				message.type === "SET_RESET_ACTIVITY_TIMEOUT" ||
+				message.type === "SET_CHECK_ACTIVITY_INTERVAL" ||
 				message.type === "GET_STATUS" ||
 				message.type === "FETCH_ANILIST" ||
 				message.type === "FETCH_ANILIST_BY_TITLE" ||

@@ -9,7 +9,10 @@ import {
 	setActivityEnabledFlag,
 	setPrivacyEnabledFlag,
 } from "../../core/state/playback";
-import { RESET_ACTIVITY_TIMEOUT } from "../../shared/constants";
+import {
+	CHECK_ACTIVITY_INTERVAL,
+	RESET_ACTIVITY_TIMEOUT,
+} from "../../shared/constants";
 import { logger } from "../../shared/logger";
 import type { RuntimeMessage } from "../../shared/types";
 
@@ -21,14 +24,30 @@ export const authState = {
 	isLoggingOut: false,
 };
 
+export const settingsState = {
+	resetActivityTimeout: RESET_ACTIVITY_TIMEOUT,
+	checkActivityInterval: CHECK_ACTIVITY_INTERVAL,
+};
+
 export const settingsReady = browser.storage.local
-	.get(["activity_enabled", "privacy_enabled"])
+	.get([
+		"activity_enabled",
+		"privacy_enabled",
+		"reset_activity_timeout",
+		"check_activity_interval",
+	])
 	.then((storage) => {
 		if (typeof storage.activity_enabled === "boolean") {
 			setActivityEnabledFlag(storage.activity_enabled);
 		}
 		if (typeof storage.privacy_enabled === "boolean") {
 			setPrivacyEnabledFlag(storage.privacy_enabled);
+		}
+		if (typeof storage.reset_activity_timeout === "number") {
+			settingsState.resetActivityTimeout = storage.reset_activity_timeout;
+		}
+		if (typeof storage.check_activity_interval === "number") {
+			settingsState.checkActivityInterval = storage.check_activity_interval;
 		}
 	});
 
@@ -70,7 +89,7 @@ export function resetActivityTimeout() {
 				.catch((err) => logger.error("[setActivity/timeout]", err));
 		}
 		clearAnimeState();
-	}, RESET_ACTIVITY_TIMEOUT * 1000);
+	}, settingsState.resetActivityTimeout * 1000);
 }
 
 export async function reinjectContentScripts() {
