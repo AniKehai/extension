@@ -38,29 +38,34 @@ export async function loginWithDiscord(): Promise<LoginResponse> {
 		const verifier = generateCodeVerifier();
 		const challenge = await generateCodeChallenge(verifier);
 
+		await browser.storage.local.set({ oauth_verifier: verifier });
+
 		if (browser?.identity?.getRedirectURL) {
 			const redirectUri = browser.identity.getRedirectURL();
+			const authUrl = buildAuthUrl(redirectUri, challenge);
 
 			const responseUrl = await browser.identity.launchWebAuthFlow({
-				url: buildAuthUrl(redirectUri, challenge),
+				url: authUrl,
 				interactive: true,
 			});
+
 			if (!responseUrl) throw new Error("No response url generated.");
+
 			const code = new URL(responseUrl).searchParams.get("code");
 			if (!code) throw new Error("No authorization code returned.");
 
 			await exchangeCodeForToken(code, redirectUri, verifier);
+			await browser.storage.local.remove("oauth_verifier");
 			return { status: "token" };
-		} else {
-			await browser.storage.local.set({ mobile_oauth_verifier: verifier });
-			await browser.tabs.create({
-				url: buildAuthUrl(MOBILE_REDIRECT_URI, challenge),
-			});
-
-			return { status: "pending" };
 		}
+
+		const authUrl = buildAuthUrl(MOBILE_REDIRECT_URI, challenge);
+		await browser.tabs.create({ url: authUrl });
+
+		return { status: "pending" };
 	} catch (error) {
 		logger.error("Auth Error:", error);
+		await browser.storage.local.remove("oauth_verifier");
 		return {
 			status: "failed",
 			error: error instanceof Error ? error.message : "Auth Error",
@@ -169,7 +174,7 @@ export async function processLocalhostRedirect(
 			url.searchParams.get("error_description") ||
 			url.searchParams.get("error");
 		if (errorParam) {
-			await browser.storage.local.remove("mobile_oauth_verifier");
+			await browser.storage.local.remove("oauth_verifier");
 			return {
 				success: false,
 				error: decodeURIComponent(errorParam.replace(/\+/g, " ")),
@@ -178,15 +183,15 @@ export async function processLocalhostRedirect(
 
 		const code = url.searchParams.get("code");
 		if (!code) {
-			await browser.storage.local.remove("mobile_oauth_verifier");
+			await browser.storage.local.remove("oauth_verifier");
 			return {
 				success: false,
 				error: "No authorization code was returned.",
 			};
 		}
 
-		const storage = await browser.storage.local.get("mobile_oauth_verifier");
-		const verifier = storage.mobile_oauth_verifier as string;
+		const storage = await browser.storage.local.get("oauth_verifier");
+		const verifier = storage.oauth_verifier as string;
 
 		if (!verifier || typeof verifier !== "string") {
 			return {
@@ -200,12 +205,12 @@ export async function processLocalhostRedirect(
 			MOBILE_REDIRECT_URI,
 			verifier,
 		);
-		await browser.storage.local.remove("mobile_oauth_verifier");
+		await browser.storage.local.remove("oauth_verifier");
 
 		return { success: true, token };
 	} catch (e) {
 		logger.error("Mobile Exchange Error:", e);
-		await browser.storage.local.remove("mobile_oauth_verifier");
+		await browser.storage.local.remove("oauth_verifier");
 		const message =
 			e instanceof Error ? e.message : "Failed to exchange authorization code.";
 		return { success: false, error: message };

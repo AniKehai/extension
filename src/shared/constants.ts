@@ -5,4 +5,4 @@ export const APPLICATION_ID = "1526911509878538340";
 export const RESET_ACTIVITY_TIMEOUT = 10;
 export const CHECK_ACTIVITY_INTERVAL = 5;
 
-export const MOBILE_REDIRECT_URI = "http://127.0.0.1/discord-auth"; // do not change
+export const MOBILE_REDIRECT_URI = "https://anikehai.vercel.app/auth";
