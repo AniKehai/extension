@@ -1,8 +1,8 @@
 import { ArrowLeft, ExternalLink, Link, LogOut } from "lucide-react";
 import { motion } from "motion/react";
-import { DISCORD_SERVER_URL } from "../../../shared/constants";
-import type { ExtensionStatus } from "../hooks/useExtensionStatus";
-import { InkDivider } from "./decor/InkDivider";
+import { DISCORD_SERVER_URL } from "@/shared/constants";
+import { InkDivider } from "@/shared/ui/components/decor/InkDivider";
+import type { ExtensionStatus } from "@/shared/ui/hooks/useExtensionStatus";
 import { ToggleSwitch } from "./ToggleSwitch";
 
 interface SettingsViewProps {

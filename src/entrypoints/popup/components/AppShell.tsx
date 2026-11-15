@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
-import type { ExtensionStatus } from "../hooks/useExtensionStatus";
-import { InkDivider } from "./decor/InkDivider";
-import { Header } from "./Header";
+import { InkDivider } from "@/shared/ui/components/decor/InkDivider";
+import { Header } from "@/shared/ui/components/Header";
+import type { ExtensionStatus } from "@/shared/ui/hooks/useExtensionStatus";
 import { IdlePanel } from "./IdlePanel";
 import { NowPlayingCard } from "./NowPlayingCard";
 import { SettingsView } from "./SettingsView";

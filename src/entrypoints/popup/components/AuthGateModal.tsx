@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { InkDivider } from "./decor/InkDivider";
+import { InkDivider } from "@/shared/ui/components/decor/InkDivider";
 
 interface AuthGateModalProps {
 	onLogin: () => void;
