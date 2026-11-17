@@ -1,4 +1,4 @@
-import { setupLifecycleListeners } from "./lifecycle";
+// import { setupLifecycleListeners } from "./lifecycle";
 import { setupStorageListener, setupTabListener } from "./listeners";
 import { setupMessageListener } from "./messages";
 import { gateway } from "./state";
@@ -6,7 +6,7 @@ import { gateway } from "./state";
 export default defineBackground(() => {
 	gateway.connect();
 
-	setupLifecycleListeners();
+	// setupLifecycleListeners();
 	setupTabListener();
 	setupStorageListener();
 	setupMessageListener();
