@@ -1,4 +1,4 @@
-import { Pause } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import type { AnimeState } from "../../../shared/types";
@@ -27,51 +27,45 @@ export function NowPlayingCard({ anime }: NowPlayingCardProps) {
 				animate={{ opacity: 1, y: 0 }}
 				exit={{ opacity: 0, y: -8 }}
 				transition={{ duration: 0.25, ease: "easeOut" }}
-				className="flex flex-col items-center"
+				className="flex flex-col items-center gap-2 rounded-2xl border border-dashed border-white/10 bg-panel-2/40 px-4 py-4"
 			>
-				<div className="relative h-52 w-38 overflow-hidden rounded-2xl border border-white/10 bg-panel-2">
-					{anime.coverUrl && !imageFailed ? (
-						<img
-							src={anime.coverUrl}
-							alt=""
-							referrerPolicy="no-referrer"
-							onError={() => setImageFailed(true)}
-							className="h-full w-full object-cover"
-						/>
-					) : (
-						<div className="grid h-full w-full place-items-center px-6 text-center text-[11px] text-muted">
-							No cover art yet
-						</div>
-					)}
-
-					<div
-						className={`absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 backdrop-blur-sm ${
-							anime.isPaused ? "text-muted" : "text-cyan"
-						}`}
-					>
-						{anime.isPaused ? (
-							<Pause size={10} strokeWidth={2.5} />
-						) : (
-							<motion.span
-								className="h-1.5 w-1.5 rounded-full bg-cyan"
-								animate={{ opacity: [1, 0.35, 1] }}
-								transition={{ duration: 1.2, repeat: Infinity }}
+				<div className="flex w-full gap-4">
+					<div className="relative shrink-0 h-28 w-20 overflow-hidden rounded-xl border border-white/10 bg-panel-2">
+						{anime.coverUrl && !imageFailed ? (
+							<img
+								src={anime.coverUrl}
+								alt=""
+								referrerPolicy="no-referrer"
+								onError={() => setImageFailed(true)}
+								className="h-full w-full object-cover"
 							/>
+						) : (
+							<div className="grid h-full w-full place-items-center px-3 text-center text-[10px] text-muted">
+								No cover art yet
+							</div>
 						)}
-						<span className="text-[10px] font-bold tracking-wide">
-							{anime.isPaused ? "PAUSED" : "REC"}
-						</span>
 					</div>
-				</div>
 
-				<div className="mt-3 flex flex-col items-center text-center">
-					<span className="text-[10px] font-semibold tracking-[0.2em] text-cyan">
-						NOW WATCHING
-					</span>
-					<h3 className="mt-1 line-clamp-2 text-[15px] font-bold leading-snug text-ink">
-						{anime.title}
-					</h3>
-					<p className="mt-1 text-[11px] text-muted">{episode}</p>
+					<div className="flex-1 min-w-0 flex flex-col justify-center gap-1.5 text-left">
+						<div className="min-w-0">
+							<h3 className="line-clamp-2 text-[13px] font-bold leading-snug text-ink">
+								{anime.title}
+							</h3>
+							<p className="mt-1 line-clamp-2 text-[11px] text-muted">
+								{episode}
+							</p>
+						</div>
+						<div className="flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 backdrop-blur-sm self-start">
+							{anime.isPaused ? (
+								<Pause size={9} strokeWidth={2.5} />
+							) : (
+								<Play size={9} strokeWidth={2.5} />
+							)}
+							<span className="text-[9px] font-bold tracking-wide">
+								{anime.isPaused ? "PAUSED" : "PLAYING"}
+							</span>
+						</div>
+					</div>
 				</div>
 			</motion.div>
 		</AnimatePresence>

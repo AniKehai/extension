@@ -20,9 +20,12 @@ export type RuntimeMessage =
 	| { type: "LOGOUT_DISCORD" }
 	| { type: "SET_ACTIVITY_ENABLED"; enabled: boolean }
 	| { type: "SET_PRIVACY_ENABLED"; enabled: boolean }
+	| { type: "SET_RESET_ACTIVITY_TIMEOUT"; value: number }
+	| { type: "SET_CHECK_ACTIVITY_INTERVAL"; value: number }
 	| { type: "STOPPED" }
 	| { type: "FETCH_ANILIST"; anilistId: number }
 	| { type: "FETCH_ANILIST_BY_TITLE"; title: string }
+	| { type: "FETCH_DISCORD_USER" }
 	| {
 			type: "INFO_UPDATE";
 			title: string;
@@ -76,6 +79,8 @@ export interface StatusResponse {
 	privacyEnabled?: boolean;
 	authError?: string | null;
 	currentAnime: AnimeState | null;
+	resetActivityTimeout?: number;
+	checkActivityInterval?: number;
 }
 
 export interface LoginResponse {
@@ -85,4 +90,19 @@ export interface LoginResponse {
 
 export interface SimpleResponse {
 	success: boolean;
+}
+
+export interface DiscordUser {
+	id: string;
+	username: string;
+	global_name?: string | null;
+	avatar?: string | null;
+	discriminator: string;
+	public_flags?: number;
+	flags?: number;
+	banner?: string | null;
+	accent_color?: number | null;
+	locale?: string;
+	mfa_enabled?: boolean;
+	premium_type?: number;
 }

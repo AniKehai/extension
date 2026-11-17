@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from "motion/react";
-import type { ExtensionStatus } from "../hooks/useExtensionStatus";
-import { InkDivider } from "./decor/InkDivider";
-import { Header } from "./Header";
+import { InkDivider } from "@/shared/ui/components/decor/InkDivider";
+import { Header } from "@/shared/ui/components/Header";
+import type { ExtensionStatus } from "@/shared/ui/hooks/useExtensionStatus";
 import { IdlePanel } from "./IdlePanel";
 import { NowPlayingCard } from "./NowPlayingCard";
 import { SettingsView } from "./SettingsView";
+import { ToggleSwitch } from "./ToggleSwitch";
 
 interface AppShellProps {
 	status: ExtensionStatus;
@@ -27,7 +28,7 @@ export function AppShell({ status }: AppShellProps) {
 				}
 			/>
 
-			<div className="mt-4 px-5">
+			<div className="mt-2 px-5">
 				<InkDivider />
 			</div>
 
@@ -47,6 +48,24 @@ export function AppShell({ status }: AppShellProps) {
 							) : (
 								<IdlePanel />
 							)}
+							<div className="mt-4 flex flex-col gap-3">
+								<div className="rounded-2xl border border-white/10 bg-panel-2/60 px-3.5">
+									<ToggleSwitch
+										checked={status.privacyEnabled}
+										onChange={status.togglePrivacy}
+										label="Go Incognito"
+										description="Barrier of Darkness: Deploy"
+									/>
+								</div>
+								<div className="rounded-2xl border border-white/10 bg-panel-2/60 px-3.5">
+									<ToggleSwitch
+										checked={!status.activityEnabled}
+										onChange={(enabled) => status.toggleActivity(!enabled)}
+										label="Hide Activity"
+										description="Severing my presence..."
+									/>
+								</div>
+							</div>
 						</motion.div>
 					) : (
 						<motion.div
