@@ -2,7 +2,7 @@ import type { AnimeSite } from "../../shared/types";
 import { getStandardVideoStats } from "../parser";
 
 export const hianimeStrategy: AnimeSite = {
-	domains: ["hianime.at"],
+	domains: ["hianime.fm"],
 	iframe_src: ["zokoanime.video", "megaplay.buzz"],
 
 	getAnimeMetadata: () => {
