@@ -18,7 +18,7 @@ export const ALLOWED_COVER_DOMAINS = [
 	// Site owned image hosts
 	"cdn.anipixcdn.co",
 	"aniwaves.ru",
-	"hianime.at",
+	"hianime.fm",
 	"myanimexadmin.online",
 	"aniwatch.cx",
 	"kaa.lt",
