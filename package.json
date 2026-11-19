@@ -1,7 +1,7 @@
 {
 	"name": "anikehai",
 	"private": true,
-	"version": "2.9.0",
+	"version": "2.9.1",
 	"type": "module",
 	"packageManager": "bun@1.4.3",
 	"engines": {
@@ -23,16 +23,16 @@
 		"lint:fix": "bunx biome check --write",
 		"format": "bunx biome format --write",
 		"validate": "bun run lint && bun run typecheck",
-		"postinstall": "wxt prepare"
+		"postinstall": "wxt prepare && lefthook install"
 	},
 	"dependencies": {
-		"lucide-react": "^1.71.0",
-		"motion": "^14.12.0",
+		"lucide-react": "^1.76.0",
+		"motion": "^14.14.0",
 		"react": "^19.3.1",
 		"react-dom": "^19.3.1"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.6.6",
+		"@biomejs/biome": "2.6.8",
 		"@commitlint/cli": "^21.2.4",
 		"@commitlint/config-conventional": "^21.2.4",
 		"@tailwindcss/vite": "^4.3.5",
@@ -43,7 +43,7 @@
 		"lefthook": "^2.2.2",
 		"tailwindcss": "^4.3.5",
 		"typescript": "^7.0.2",
-		"vite": "^8.3.7",
+		"vite": "^8.3.8",
 		"web-ext": "^10.8.0",
 		"wxt": "^0.21.5"
 	}
