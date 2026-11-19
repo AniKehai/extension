@@ -42,7 +42,7 @@ export function SettingsView({ status }: SettingsViewProps) {
 						</div>
 					)}
 					<div className="min-w-0">
-						<p className="font-semibold text-ink truncate">{displayName}</p>
+						<p className="text-[12.5px] text-ink truncate">{displayName}</p>
 						<p className="text-[11px] text-muted truncate">@{username}</p>
 					</div>
 				</div>
@@ -65,7 +65,7 @@ export function SettingsView({ status }: SettingsViewProps) {
 					<div className="rounded-2xl border border-white/10 bg-panel-2/60 px-3 py-2">
 						<div className="flex items-center justify-between gap-4">
 							<div className="min-w-0">
-								<p className="font-medium text-ink">Clear Status After</p>
+								<p className="text-[12.5px] text-ink">Clear Status After</p>
 								<p className="text-[11px] text-muted line-clamp-2">
 									How long before removing your status when you stop watching
 								</p>
@@ -90,7 +90,7 @@ export function SettingsView({ status }: SettingsViewProps) {
 					<div className="rounded-2xl border border-white/10 bg-panel-2/60 px-3 py-2">
 						<div className="flex items-center justify-between gap-4">
 							<div className="min-w-0">
-								<p className="font-medium text-ink">Update Status Every</p>
+								<p className="text-[12.5px] text-ink">Update Status Every</p>
 								<p className="text-[11px] text-muted line-clamp-2">
 									How often to refresh your episode progress on Discord
 								</p>
