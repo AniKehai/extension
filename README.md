@@ -19,7 +19,7 @@ A lightweight, standalone browser extension that shows the anime you are watchin
 ![Firefox Active Users](https://img.shields.io/badge/firefox_active_users-35-blue?style=flat&labelColor=555555)
 <!-- DOWNLOADS:END -->
 
-<a href="https://discord.gg/w9Q7YUrzpn"><img src="https://invidget.switchblade.xyz/w9Q7YUrzpn"></a>
+[![Discord Server Invite](https://invite.casperiv.dev?inviteCode=3MBMWCJs8d)](https://discord.gg/3MBMWCJs8d)
 
 </div>
 
