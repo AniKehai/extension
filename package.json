@@ -23,7 +23,7 @@
 		"lint:fix": "bunx biome check --write",
 		"format": "bunx biome format --write",
 		"validate": "bun run lint && bun run typecheck",
-		"postinstall": "wxt prepare"
+		"postinstall": "wxt prepare && lefthook install"
 	},
 	"dependencies": {
 		"lucide-react": "^1.76.0",
