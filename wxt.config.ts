@@ -36,6 +36,9 @@ export default defineConfig({
 	}),
 	vite: () => ({
 		plugins: [tailwindcss()],
+		build: {
+			sourcemap: true,
+		},
 	}),
 	modules: ["@wxt-dev/module-react"],
 	zip: {
