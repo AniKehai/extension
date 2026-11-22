@@ -22,6 +22,7 @@ export default defineConfig({
 			...extractMatches(strategies),
 			"https://discord.com/*",
 			"wss://gateway.discord.gg/*",
+			"https://*.sentry.io/*",
 		],
 		browser_specific_settings: {
 			gecko: {
@@ -35,6 +36,9 @@ export default defineConfig({
 	}),
 	vite: () => ({
 		plugins: [tailwindcss()],
+		build: {
+			sourcemap: true,
+		},
 	}),
 	modules: ["@wxt-dev/module-react"],
 	zip: {

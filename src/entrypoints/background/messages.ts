@@ -1,3 +1,4 @@
+import { captureError, setSentryUser } from "@/utils/sentry";
 import {
 	fetchAniListCoverByTitle,
 	fetchAnilistCover,
@@ -5,6 +6,7 @@ import {
 import {
 	clearCachedDiscordUser,
 	fetchDiscordUser,
+	getCachedDiscordUser,
 	loginWithDiscord,
 } from "../../core/discord/auth";
 import {
@@ -39,6 +41,13 @@ export function setupMessageListener() {
 						const result = await loginWithDiscord();
 						if (result.status === "token") {
 							await gateway.connect();
+							const user = await getCachedDiscordUser();
+							if (user) {
+								setSentryUser({
+									id: user.id,
+									username: user.username,
+								});
+							}
 							sendResponse({ status: "token" });
 						} else {
 							sendResponse(result);
@@ -70,6 +79,10 @@ export function setupMessageListener() {
 							});
 						} catch (err) {
 							logger.error("[setActivity/logout]", err);
+							captureError(err, {
+								entrypoint: "background",
+								action: "set_activity_logout",
+							});
 						}
 					}
 
@@ -86,6 +99,7 @@ export function setupMessageListener() {
 							"discord_token_expires_at",
 						]);
 						await clearCachedDiscordUser();
+						setSentryUser(null);
 					} finally {
 						authState.isLoggingOut = false;
 					}
@@ -104,7 +118,13 @@ export function setupMessageListener() {
 						if (currentAnimeState.title !== null) {
 							gateway
 								.setActivity({ type: "STOPPED", ...currentAnimeState })
-								.catch((err) => logger.error("[setActivity/toggle]", err));
+								.catch((err) => {
+									logger.error("[setActivity/toggle]", err);
+									captureError(err, {
+										entrypoint: "background",
+										action: "set_activity_toggle",
+									});
+								});
 						}
 						clearAnimeState();
 					}
@@ -169,7 +189,13 @@ export function setupMessageListener() {
 					if (currentAnimeState.title !== null) {
 						gateway
 							.setActivity({ type: "STOPPED", ...currentAnimeState })
-							.catch((err) => logger.error("[setActivity/stopped]", err));
+							.catch((err) => {
+								logger.error("[setActivity/stopped]", err);
+								captureError(err, {
+									entrypoint: "background",
+									action: "set_activity_stopped",
+								});
+							});
 					}
 					const { activityTimeout } = await import("./state");
 					if (activityTimeout) clearTimeout(activityTimeout);

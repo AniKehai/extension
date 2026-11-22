@@ -1,3 +1,4 @@
+import { captureError, initSentry } from "@/utils/sentry";
 import { extractMatches } from "../scraper/extractor";
 import { strategies } from "../scraper/sites";
 import { CHECK_ACTIVITY_INTERVAL } from "../shared/constants";
@@ -31,6 +32,24 @@ export default defineContentScript({
 	allFrames: true,
 
 	main(ctx) {
+		initSentry("content");
+
+		window.addEventListener("error", (event) => {
+			captureError(event.error ?? new Error(event.message ?? "Unknown error"), {
+				entrypoint: "content",
+				action: "uncaught_error",
+				site: window.location.hostname,
+			});
+		});
+
+		window.addEventListener("unhandledrejection", (event) => {
+			captureError(event.reason, {
+				entrypoint: "content",
+				action: "unhandled_rejection",
+				site: window.location.hostname,
+			});
+		});
+
 		const host = window.location.hostname;
 
 		const metaStrategy = strategies.find((stg) =>
@@ -156,7 +175,12 @@ export default defineContentScript({
 					}
 				}
 			} catch (err) {
-				logger.error("DOM scraping error:", err);
+				logger.error("[content] dom_scrape failed", err);
+				captureError(err, {
+					entrypoint: "content",
+					site: window.location.hostname,
+					action: "dom_scrape",
+				});
 			}
 		}, CHECK_ACTIVITY_INTERVAL * 1000);
 	},
