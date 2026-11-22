@@ -1,4 +1,4 @@
-import { setSentryUser } from "@/utils/sentry";
+import { captureError, setSentryUser } from "@/utils/sentry";
 import {
 	fetchAniListCoverByTitle,
 	fetchAnilistCover,
@@ -79,6 +79,10 @@ export function setupMessageListener() {
 							});
 						} catch (err) {
 							logger.error("[setActivity/logout]", err);
+							captureError(err, {
+								entrypoint: "background",
+								action: "set_activity_logout",
+							});
 						}
 					}
 
@@ -114,7 +118,13 @@ export function setupMessageListener() {
 						if (currentAnimeState.title !== null) {
 							gateway
 								.setActivity({ type: "STOPPED", ...currentAnimeState })
-								.catch((err) => logger.error("[setActivity/toggle]", err));
+								.catch((err) => {
+									logger.error("[setActivity/toggle]", err);
+									captureError(err, {
+										entrypoint: "background",
+										action: "set_activity_toggle",
+									});
+								});
 						}
 						clearAnimeState();
 					}
@@ -179,7 +189,13 @@ export function setupMessageListener() {
 					if (currentAnimeState.title !== null) {
 						gateway
 							.setActivity({ type: "STOPPED", ...currentAnimeState })
-							.catch((err) => logger.error("[setActivity/stopped]", err));
+							.catch((err) => {
+								logger.error("[setActivity/stopped]", err);
+								captureError(err, {
+									entrypoint: "background",
+									action: "set_activity_stopped",
+								});
+							});
 					}
 					const { activityTimeout } = await import("./state");
 					if (activityTimeout) clearTimeout(activityTimeout);

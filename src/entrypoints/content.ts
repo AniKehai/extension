@@ -175,6 +175,7 @@ export default defineContentScript({
 					}
 				}
 			} catch (err) {
+				logger.error("[content] dom_scrape failed", err);
 				captureError(err, {
 					entrypoint: "content",
 					site: window.location.hostname,

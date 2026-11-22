@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchDiscordUser } from "@/core/discord/auth";
-import { setSentryUser } from "@/utils/sentry";
+import { captureError, setSentryUser } from "@/utils/sentry";
 import { logger } from "../../../shared/logger";
 import type { AnimeState, ViewName } from "../../../shared/types";
 import {
@@ -64,6 +64,11 @@ export function useExtensionStatus() {
 			}
 		} catch (err) {
 			logger.error("[popup] failed to read status", err);
+			captureError(err, {
+				entrypoint: "popup",
+				action: "read_status",
+				site: window.location.hostname,
+			});
 		} finally {
 			setIsBootstrapping(false);
 		}
@@ -114,6 +119,11 @@ export function useExtensionStatus() {
 				await setActivityEnabled(next);
 			} catch (err) {
 				logger.error("[popup] failed to update activity flag", err);
+				captureError(err, {
+					entrypoint: "popup",
+					action: "update_activity_flag",
+					site: window.location.hostname,
+				});
 				setActivityEnabledState(previous);
 			}
 		},
@@ -128,6 +138,11 @@ export function useExtensionStatus() {
 				await setPrivacyEnabled(next);
 			} catch (err) {
 				logger.error("[popup] failed to update privacy flag", err);
+				captureError(err, {
+					entrypoint: "popup",
+					action: "update_privacy_flag",
+					site: window.location.hostname,
+				});
 				setPrivacyEnabledState(previous);
 			}
 		},
@@ -142,6 +157,11 @@ export function useExtensionStatus() {
 				await setResetActivityTimeout(next);
 			} catch (err) {
 				logger.error("[popup] failed to update reset activity timeout", err);
+				captureError(err, {
+					entrypoint: "popup",
+					action: "update_reset_activity_timeout",
+					site: window.location.hostname,
+				});
 				setResetActivityTimeoutState(previous);
 			}
 		},
@@ -156,6 +176,11 @@ export function useExtensionStatus() {
 				await setCheckActivityInterval(next);
 			} catch (err) {
 				logger.error("[popup] failed to update check activity interval", err);
+				captureError(err, {
+					entrypoint: "popup",
+					action: "update_check_activity_interval",
+					site: window.location.hostname,
+				});
 				setCheckActivityIntervalState(previous);
 			}
 		},
