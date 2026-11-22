@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { fetchDiscordUser } from "@/core/discord/auth";
+import { setSentryUser } from "@/utils/sentry";
 import { logger } from "../../../shared/logger";
 import type { AnimeState, ViewName } from "../../../shared/types";
 import {
@@ -85,6 +87,10 @@ export function useExtensionStatus() {
 				setIsAuthLoading(false);
 			}
 			await refresh();
+			const user = await fetchDiscordUser();
+			if (user) {
+				setSentryUser({ id: user.id, username: user.username });
+			}
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "Something went wrong.");
 			setIsAuthLoading(false);
@@ -93,6 +99,7 @@ export function useExtensionStatus() {
 
 	const logout = useCallback(async () => {
 		await logoutDiscord();
+		setSentryUser(null);
 		setIsAuthenticated(false);
 		setIsGatewayReady(false);
 		setCurrentAnime(null);
