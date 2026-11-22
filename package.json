@@ -26,6 +26,7 @@
 		"postinstall": "wxt prepare && lefthook install"
 	},
 	"dependencies": {
+		"@sentry/browser": "^11.16.0",
 		"lucide-react": "^1.76.0",
 		"motion": "^14.14.0",
 		"react": "^19.3.1",
