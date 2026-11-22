@@ -1,6 +1,5 @@
 import type { ErrorEvent } from "@sentry/browser";
 import { BrowserClient, Scope } from "@sentry/browser";
-import { getCachedDiscordUser } from "@/core/discord/auth";
 import { logger } from "@/shared/logger";
 
 const DSN = import.meta.env.WXT_SENTRY_DSN;
@@ -11,7 +10,6 @@ if (!DSN) {
 
 let client: BrowserClient | null = null;
 let scope: Scope | null = null;
-let sentryUser: { id: string; username?: string } | null = null;
 
 function serializeEnvelope(envelope: unknown): string {
 	const lines: string[] = [];
@@ -87,26 +85,13 @@ export function initSentry(
 
 	scope = new Scope();
 	scope.setTag("entrypoint", entrypoint);
-
-	getCachedDiscordUser().then((user) => {
-		if (user && scope) {
-			sentryUser = { id: user.id, username: user.username };
-			scope.setUser({ id: user.id, username: user.username });
-		}
-	});
 }
 
 export function setSentryUser(
-	discordUser: { id: string; username?: string } | null,
+	_discordUser: { id: string; username?: string } | null,
 ): void {
-	sentryUser = discordUser;
-	if (scope) {
-		scope.setUser(
-			discordUser
-				? { id: discordUser.id, username: discordUser.username }
-				: null,
-		);
-	}
+	// Intentionally no-op: Discord user data is not sent to Sentry.
+	// Keeps callers (messages.ts, useExtensionStatus.ts) compiling without change.
 }
 
 export function captureError(
@@ -128,12 +113,6 @@ export function captureError(
 	logger.log("[sentry] Capturing error:", context.action, context.entrypoint);
 
 	const captureScope = new Scope();
-	if (sentryUser) {
-		captureScope.setUser({
-			id: sentryUser.id,
-			username: sentryUser.username,
-		});
-	}
 	captureScope.setTag("entrypoint", context.entrypoint);
 	if (context.site) captureScope.setTag("site", context.site);
 	if (context.action) captureScope.setTag("action", context.action);
