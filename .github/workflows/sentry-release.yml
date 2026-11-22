@@ -37,14 +37,14 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
       - name: Create Sentry release
         run: |
-          bunx @sentry-cli releases new "${{ steps.version.outputs.version }}" \
+          bunx @sentry/cli releases new "${{ steps.version.outputs.version }}" \
             --org ${{ secrets.SENTRY_ORG }} \
             --project ${{ secrets.SENTRY_PROJECT }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Upload source maps (chrome)
         run: |
-          bunx @sentry-cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
+          bunx @sentry/cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
             --org ${{ secrets.SENTRY_ORG }} \
             --project ${{ secrets.SENTRY_PROJECT }} \
             --rewrite \
@@ -53,16 +53,16 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Upload source maps (firefox)
         run: |
-          bunx @sentry-cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
+          bunx @sentry/cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
             --org ${{ secrets.SENTRY_ORG }} \
             --project ${{ secrets.SENTRY_PROJECT }} \
             --rewrite \
-            .output/firefox-mv3/
+            .output/firefox-mv2/
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Upload source maps (edge)
         run: |
-          bunx @sentry-cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
+          bunx @sentry/cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
             --org ${{ secrets.SENTRY_ORG }} \
             --project ${{ secrets.SENTRY_PROJECT }} \
             --rewrite \
@@ -71,7 +71,7 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Finalize Sentry release
         run: |
-          bunx @sentry-cli releases finalize "${{ steps.version.outputs.version }}" \
+          bunx @sentry/cli releases finalize "${{ steps.version.outputs.version }}" \
             --org ${{ secrets.SENTRY_ORG }} \
             --project ${{ secrets.SENTRY_PROJECT }}
         env:
