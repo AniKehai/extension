@@ -36,6 +36,7 @@
 		"@biomejs/biome": "2.6.8",
 		"@commitlint/cli": "^21.2.4",
 		"@commitlint/config-conventional": "^21.2.4",
+		"@sentry/cli": "^3.8.2",
 		"@tailwindcss/vite": "^4.3.5",
 		"@types/bun": "^1.4.4",
 		"@types/react": "^19.3.0",
@@ -47,5 +48,8 @@
 		"vite": "^8.3.8",
 		"web-ext": "^10.8.0",
 		"wxt": "^0.21.5"
-	}
+	},
+	"trustedDependencies": [
+		"@sentry/cli"
+	]
 }
