@@ -1,3 +1,4 @@
+import { setSentryUser } from "@/utils/sentry";
 import { APPLICATION_ID, MOBILE_REDIRECT_URI } from "../../shared/constants";
 import { logger } from "../../shared/logger";
 import type { DiscordUser, LoginResponse } from "../../shared/types";
@@ -191,6 +192,32 @@ export async function fetchDiscordUser(
     } catch (error) {
         logger.error("Fetch Discord User Error:", error);
         return getCachedDiscordUser();
+    }
+}
+
+export async function refreshDiscordUserOnStartup(): Promise<void> {
+    const storage = await browser.storage.local.get("discord_token");
+    const token = storage.discord_token;
+
+    if (!token || typeof token !== "string") {
+        logger.log(
+            "No Discord token in storage — skipping startup user refresh",
+        );
+        return;
+    }
+
+    try {
+        const user = await fetchDiscordUser(true);
+        if (user) {
+            logger.log(
+                "Discord user refreshed on startup:",
+                user.username,
+                `(${user.id})`,
+            );
+            setSentryUser({ id: user.id, username: user.username });
+        }
+    } catch (error) {
+        logger.error("Startup Discord user refresh failed:", error);
     }
 }
 
