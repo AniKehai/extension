@@ -37,11 +37,11 @@ export default defineConfig({
 	vite: () => ({
 		plugins: [tailwindcss()],
 		build: {
-			sourcemap: true,
+			sourcemap: "hidden",
 		},
 	}),
 	modules: ["@wxt-dev/module-react"],
 	zip: {
-		excludeSources: ["docs", "project-snapshot.md", "snapshot.sh"],
+		excludeSources: ["docs"],
 	},
 });
