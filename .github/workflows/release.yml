@@ -1,46 +1,46 @@
 name: Release
 on:
-  push:
-    tags:
-      - v*.*.*
+    push:
+        tags:
+            - v*.*.*
 permissions:
-  contents: write
+    contents: write
 jobs:
-  release:
-    name: Build & Publish Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.4.3
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-      - name: Validate Tag Matches Version
-        run: |
-          PKG_VERSION=$(jq -r .version package.json)
-          if [ "v$PKG_VERSION" != "${{ github.ref_name }}" ]; then
-            echo "::error::Tag ${{ github.ref_name }} does not match package.json v$PKG_VERSION"
-            exit 1
-          fi
-      - name: Validate Codebase
-        run: bun run validate
-      - name: Run Build pipeline
-        run: |
-          bun run zip:chrome
-          bun run zip:firefox
-          bun run zip:edge
-      - name: Prepare Artifacts
-        run: |
-          mkdir -p artifacts
-          mv .output/*.zip artifacts/
-      - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          generate_release_notes: true
-          files: |
-            artifacts/*.zip
+    release:
+        name: Build & Publish Release
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.4.3
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+            - name: Validate Tag Matches Version
+              run: |
+                  PKG_VERSION=$(jq -r .version package.json)
+                  if [ "v$PKG_VERSION" != "${{ github.ref_name }}" ]; then
+                    echo "::error::Tag ${{ github.ref_name }} does not match package.json v$PKG_VERSION"
+                    exit 1
+                  fi
+            - name: Validate Codebase
+              run: bun run validate
+            - name: Run Build pipeline
+              run: |
+                  bun run zip:chrome
+                  bun run zip:firefox
+                  bun run zip:edge
+            - name: Prepare Artifacts
+              run: |
+                  mkdir -p artifacts
+                  mv .output/*.zip artifacts/
+            - name: Publish GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  generate_release_notes: true
+                  files: |
+                      artifacts/*.zip

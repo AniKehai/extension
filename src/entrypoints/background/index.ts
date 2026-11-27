@@ -6,26 +6,29 @@ import { setupMessageListener } from "./messages";
 import { gateway } from "./state";
 
 export default defineBackground(() => {
-	initSentry("background");
+    initSentry("background");
 
-	self.addEventListener("error", (event) => {
-		captureError(event.error ?? new Error(event.message ?? "Unknown error"), {
-			entrypoint: "background",
-			action: "uncaught_error",
-		});
-	});
+    self.addEventListener("error", (event) => {
+        captureError(
+            event.error ?? new Error(event.message ?? "Unknown error"),
+            {
+                entrypoint: "background",
+                action: "uncaught_error",
+            },
+        );
+    });
 
-	self.addEventListener("unhandledrejection", (event) => {
-		captureError(event.reason, {
-			entrypoint: "background",
-			action: "unhandled_rejection",
-		});
-	});
+    self.addEventListener("unhandledrejection", (event) => {
+        captureError(event.reason, {
+            entrypoint: "background",
+            action: "unhandled_rejection",
+        });
+    });
 
-	gateway.connect();
+    gateway.connect();
 
-	// setupLifecycleListeners();
-	setupTabListener();
-	setupStorageListener();
-	setupMessageListener();
+    // setupLifecycleListeners();
+    setupTabListener();
+    setupStorageListener();
+    setupMessageListener();
 });

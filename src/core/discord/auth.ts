@@ -3,306 +3,314 @@ import { logger } from "../../shared/logger";
 import type { DiscordUser, LoginResponse } from "../../shared/types";
 
 function base64Url(bytes: Uint8Array | ArrayBuffer) {
-	return btoa(String.fromCharCode(...new Uint8Array(bytes)))
-		.replace(/\+/g, "-")
-		.replace(/\//g, "_")
-		.replace(/=+$/, "");
+    return btoa(String.fromCharCode(...new Uint8Array(bytes)))
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, "");
 }
 
 function generateCodeVerifier() {
-	const array = new Uint8Array(32);
-	crypto.getRandomValues(array);
-	return base64Url(array);
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return base64Url(array);
 }
 
 async function generateCodeChallenge(verifier: string) {
-	const encoder = new TextEncoder();
-	const data = encoder.encode(verifier);
-	const digest = await crypto.subtle.digest("SHA-256", data);
-	return base64Url(digest);
+    const encoder = new TextEncoder();
+    const data = encoder.encode(verifier);
+    const digest = await crypto.subtle.digest("SHA-256", data);
+    return base64Url(digest);
 }
 
 function buildAuthUrl(redirectUri: string, challenge: string) {
-	const authUrl = new URL("https://discord.com/oauth2/authorize");
-	authUrl.searchParams.set("client_id", APPLICATION_ID);
-	authUrl.searchParams.set("response_type", "code");
-	authUrl.searchParams.set("redirect_uri", redirectUri);
-	authUrl.searchParams.set("scope", "openid sdk.social_layer_presence");
-	authUrl.searchParams.set("code_challenge", challenge);
-	authUrl.searchParams.set("code_challenge_method", "S256");
-	return authUrl.toString();
+    const authUrl = new URL("https://discord.com/oauth2/authorize");
+    authUrl.searchParams.set("client_id", APPLICATION_ID);
+    authUrl.searchParams.set("response_type", "code");
+    authUrl.searchParams.set("redirect_uri", redirectUri);
+    authUrl.searchParams.set("scope", "openid sdk.social_layer_presence");
+    authUrl.searchParams.set("code_challenge", challenge);
+    authUrl.searchParams.set("code_challenge_method", "S256");
+    return authUrl.toString();
 }
 
 export async function loginWithDiscord(): Promise<LoginResponse> {
-	try {
-		const verifier = generateCodeVerifier();
-		const challenge = await generateCodeChallenge(verifier);
+    try {
+        const verifier = generateCodeVerifier();
+        const challenge = await generateCodeChallenge(verifier);
 
-		await browser.storage.local.set({ oauth_verifier: verifier });
+        await browser.storage.local.set({ oauth_verifier: verifier });
 
-		if (browser?.identity?.getRedirectURL) {
-			const redirectUri = browser.identity.getRedirectURL();
-			const authUrl = buildAuthUrl(redirectUri, challenge);
+        if (browser?.identity?.getRedirectURL) {
+            const redirectUri = browser.identity.getRedirectURL();
+            const authUrl = buildAuthUrl(redirectUri, challenge);
 
-			const responseUrl = await browser.identity.launchWebAuthFlow({
-				url: authUrl,
-				interactive: true,
-			});
+            const responseUrl = await browser.identity.launchWebAuthFlow({
+                url: authUrl,
+                interactive: true,
+            });
 
-			if (!responseUrl) throw new Error("No response url generated.");
+            if (!responseUrl) throw new Error("No response url generated.");
 
-			const code = new URL(responseUrl).searchParams.get("code");
-			if (!code) throw new Error("No authorization code returned.");
+            const code = new URL(responseUrl).searchParams.get("code");
+            if (!code) throw new Error("No authorization code returned.");
 
-			await exchangeCodeForToken(code, redirectUri, verifier);
-			await browser.storage.local.remove("oauth_verifier");
+            await exchangeCodeForToken(code, redirectUri, verifier);
+            await browser.storage.local.remove("oauth_verifier");
 
-			await fetchDiscordUser(true);
+            await fetchDiscordUser(true);
 
-			return { status: "token" };
-		}
+            return { status: "token" };
+        }
 
-		const authUrl = buildAuthUrl(MOBILE_REDIRECT_URI, challenge);
-		await browser.tabs.create({ url: authUrl });
+        const authUrl = buildAuthUrl(MOBILE_REDIRECT_URI, challenge);
+        await browser.tabs.create({ url: authUrl });
 
-		return { status: "pending" };
-	} catch (error) {
-		logger.error("Auth Error:", error);
-		await browser.storage.local.remove("oauth_verifier");
-		return {
-			status: "failed",
-			error: error instanceof Error ? error.message : "Auth Error",
-		};
-	}
+        return { status: "pending" };
+    } catch (error) {
+        logger.error("Auth Error:", error);
+        await browser.storage.local.remove("oauth_verifier");
+        return {
+            status: "failed",
+            error: error instanceof Error ? error.message : "Auth Error",
+        };
+    }
 }
 
 async function exchangeCodeForToken(
-	code: string,
-	redirectUri: string,
-	verifier: string,
+    code: string,
+    redirectUri: string,
+    verifier: string,
 ) {
-	const body = new URLSearchParams({
-		client_id: APPLICATION_ID,
-		grant_type: "authorization_code",
-		code,
-		redirect_uri: redirectUri,
-		code_verifier: verifier,
-	});
+    const body = new URLSearchParams({
+        client_id: APPLICATION_ID,
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: redirectUri,
+        code_verifier: verifier,
+    });
 
-	const res = await fetch("https://discord.com/api/oauth2/token", {
-		method: "POST",
-		headers: { "Content-Type": "application/x-www-form-urlencoded" },
-		body: body.toString(),
-	});
+    const res = await fetch("https://discord.com/api/oauth2/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString(),
+    });
 
-	const data = await res.json();
-	if (data.access_token) {
-		const expiresAt = Date.now() + data.expires_in * 1000;
-		await browser.storage.local.set({
-			discord_token: data.access_token,
-			discord_refresh_token: data.refresh_token,
-			discord_token_expires_at: expiresAt,
-		});
-		return data.access_token;
-	}
-	throw new Error("Failed to exchange code for token.");
+    const data = await res.json();
+    if (data.access_token) {
+        const expiresAt = Date.now() + data.expires_in * 1000;
+        await browser.storage.local.set({
+            discord_token: data.access_token,
+            discord_refresh_token: data.refresh_token,
+            discord_token_expires_at: expiresAt,
+        });
+        return data.access_token;
+    }
+    throw new Error("Failed to exchange code for token.");
 }
 
 const TOKEN_KEYS = [
-	"discord_token",
-	"discord_refresh_token",
-	"discord_token_expires_at",
+    "discord_token",
+    "discord_refresh_token",
+    "discord_token_expires_at",
 ];
 
 let inFlightRefresh: Promise<string | null> | null = null;
 
 export function refreshDiscordToken(): Promise<string | null> {
-	if (!inFlightRefresh) {
-		inFlightRefresh = performRefresh().finally(() => {
-			inFlightRefresh = null;
-		});
-	}
-	return inFlightRefresh;
+    if (!inFlightRefresh) {
+        inFlightRefresh = performRefresh().finally(() => {
+            inFlightRefresh = null;
+        });
+    }
+    return inFlightRefresh;
 }
 
 const USER_DATA_KEY = "discord_user_data";
 
 export async function getCachedDiscordUser(): Promise<DiscordUser | null> {
-	const storage = await browser.storage.local.get(USER_DATA_KEY);
-	const userData = storage[USER_DATA_KEY];
-	if (userData && typeof userData === "object") {
-		return userData as DiscordUser;
-	}
-	return null;
+    const storage = await browser.storage.local.get(USER_DATA_KEY);
+    const userData = storage[USER_DATA_KEY];
+    if (userData && typeof userData === "object") {
+        return userData as DiscordUser;
+    }
+    return null;
 }
 
 export async function setCachedDiscordUser(user: DiscordUser): Promise<void> {
-	await browser.storage.local.set({ [USER_DATA_KEY]: user });
+    await browser.storage.local.set({ [USER_DATA_KEY]: user });
 }
 
 export async function clearCachedDiscordUser(): Promise<void> {
-	await browser.storage.local.remove(USER_DATA_KEY);
+    await browser.storage.local.remove(USER_DATA_KEY);
 }
 
 export async function fetchDiscordUser(
-	forceRefresh = false,
+    forceRefresh = false,
 ): Promise<DiscordUser | null> {
-	if (!forceRefresh) {
-		const cached = await getCachedDiscordUser();
-		if (cached) {
-			return cached;
-		}
-	}
+    if (!forceRefresh) {
+        const cached = await getCachedDiscordUser();
+        if (cached) {
+            return cached;
+        }
+    }
 
-	const storage = await browser.storage.local.get("discord_token");
-	const token = storage.discord_token;
+    const storage = await browser.storage.local.get("discord_token");
+    const token = storage.discord_token;
 
-	if (!token || typeof token !== "string") {
-		logger.warn("No Discord token found for fetching user");
-		return null;
-	}
+    if (!token || typeof token !== "string") {
+        logger.warn("No Discord token found for fetching user");
+        return null;
+    }
 
-	try {
-		const res = await fetch("https://discord.com/api/users/@me", {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
+    try {
+        const res = await fetch("https://discord.com/api/users/@me", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
-		if (!res.ok) {
-			if (res.status === 401) {
-				logger.warn("Discord token expired, attempting refresh");
-				const newToken = await refreshDiscordToken();
-				if (newToken) {
-					return fetchDiscordUser(true);
-				}
-			}
-			logger.error(
-				"Failed to fetch Discord user:",
-				res.status,
-				await res.text(),
-			);
-			return getCachedDiscordUser();
-		}
+        if (!res.ok) {
+            if (res.status === 401) {
+                logger.warn("Discord token expired, attempting refresh");
+                const newToken = await refreshDiscordToken();
+                if (newToken) {
+                    return fetchDiscordUser(true);
+                }
+            }
+            logger.error(
+                "Failed to fetch Discord user:",
+                res.status,
+                await res.text(),
+            );
+            return getCachedDiscordUser();
+        }
 
-		const userData = (await res.json()) as DiscordUser;
-		await setCachedDiscordUser(userData);
-		return userData;
-	} catch (error) {
-		logger.error("Fetch Discord User Error:", error);
-		return getCachedDiscordUser();
-	}
+        const userData = (await res.json()) as DiscordUser;
+        await setCachedDiscordUser(userData);
+        return userData;
+    } catch (error) {
+        logger.error("Fetch Discord User Error:", error);
+        return getCachedDiscordUser();
+    }
 }
 
 export function getAvatarUrl(user: DiscordUser, size = 256): string | null {
-	if (!user.avatar) return null;
-	const ext = user.avatar.startsWith("a_") ? "gif" : "png";
-	return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=${size}`;
+    if (!user.avatar) return null;
+    const ext = user.avatar.startsWith("a_") ? "gif" : "png";
+    return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=${size}`;
 }
 
 export function getBannerUrl(user: DiscordUser, size = 512): string | null {
-	if (!user.banner) return null;
-	const ext = user.banner.startsWith("a_") ? "gif" : "png";
-	return `https://cdn.discordapp.com/banners/${user.id}/${user.banner}.${ext}?size=${size}`;
+    if (!user.banner) return null;
+    const ext = user.banner.startsWith("a_") ? "gif" : "png";
+    return `https://cdn.discordapp.com/banners/${user.id}/${user.banner}.${ext}?size=${size}`;
 }
 
 export function getDisplayName(user: DiscordUser): string {
-	return user.global_name ?? user.username;
+    return user.global_name ?? user.username;
 }
 
 async function performRefresh(): Promise<string | null> {
-	const storage = await browser.storage.local.get("discord_refresh_token");
-	const refreshToken = storage.discord_refresh_token;
-	if (typeof refreshToken !== "string" || !refreshToken) return null;
+    const storage = await browser.storage.local.get("discord_refresh_token");
+    const refreshToken = storage.discord_refresh_token;
+    if (typeof refreshToken !== "string" || !refreshToken) return null;
 
-	const body = new URLSearchParams({
-		client_id: APPLICATION_ID,
-		grant_type: "refresh_token",
-		refresh_token: refreshToken,
-	});
+    const body = new URLSearchParams({
+        client_id: APPLICATION_ID,
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
+    });
 
-	try {
-		const res = await fetch("https://discord.com/api/oauth2/token", {
-			method: "POST",
-			headers: { "Content-Type": "application/x-www-form-urlencoded" },
-			body: body.toString(),
-		});
-		const data = await res.json();
+    try {
+        const res = await fetch("https://discord.com/api/oauth2/token", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: body.toString(),
+        });
+        const data = await res.json();
 
-		if (data.access_token) {
-			const expiresAt = Date.now() + data.expires_in * 1000;
-			await browser.storage.local.set({
-				discord_token: data.access_token,
-				discord_refresh_token: data.refresh_token ?? refreshToken,
-				discord_token_expires_at: expiresAt,
-			});
-			return data.access_token;
-		}
+        if (data.access_token) {
+            const expiresAt = Date.now() + data.expires_in * 1000;
+            await browser.storage.local.set({
+                discord_token: data.access_token,
+                discord_refresh_token: data.refresh_token ?? refreshToken,
+                discord_token_expires_at: expiresAt,
+            });
+            return data.access_token;
+        }
 
-		if (data.error === "invalid_grant") {
-			logger.error("Token Refresh: refresh token rejected. Clearing tokens.");
-			await browser.storage.local.remove(TOKEN_KEYS);
-		} else {
-			logger.error("Token Refresh failed (tokens kept):", res.status, data);
-		}
-		return null;
-	} catch (error) {
-		logger.error("Token Refresh Error:", error);
-		return null;
-	}
+        if (data.error === "invalid_grant") {
+            logger.error(
+                "Token Refresh: refresh token rejected. Clearing tokens.",
+            );
+            await browser.storage.local.remove(TOKEN_KEYS);
+        } else {
+            logger.error(
+                "Token Refresh failed (tokens kept):",
+                res.status,
+                data,
+            );
+        }
+        return null;
+    } catch (error) {
+        logger.error("Token Refresh Error:", error);
+        return null;
+    }
 }
 
 export async function processLocalhostRedirect(
-	urlStr: string,
+    urlStr: string,
 ): Promise<{ success: boolean; token?: string; error?: string }> {
-	try {
-		const url = new URL(urlStr);
+    try {
+        const url = new URL(urlStr);
 
-		const errorParam =
-			url.searchParams.get("error_description") ||
-			url.searchParams.get("error");
-		if (errorParam) {
-			await browser.storage.local.remove("oauth_verifier");
-			return {
-				success: false,
-				error: decodeURIComponent(errorParam.replace(/\+/g, " ")),
-			};
-		}
+        const errorParam =
+            url.searchParams.get("error_description") ||
+            url.searchParams.get("error");
+        if (errorParam) {
+            await browser.storage.local.remove("oauth_verifier");
+            return {
+                success: false,
+                error: decodeURIComponent(errorParam.replace(/\+/g, " ")),
+            };
+        }
 
-		const code = url.searchParams.get("code");
-		if (!code) {
-			await browser.storage.local.remove("oauth_verifier");
-			return {
-				success: false,
-				error: "No authorization code was returned.",
-			};
-		}
+        const code = url.searchParams.get("code");
+        if (!code) {
+            await browser.storage.local.remove("oauth_verifier");
+            return {
+                success: false,
+                error: "No authorization code was returned.",
+            };
+        }
 
-		const storage = await browser.storage.local.get("oauth_verifier");
-		const verifier = storage.oauth_verifier as string;
+        const storage = await browser.storage.local.get("oauth_verifier");
+        const verifier = storage.oauth_verifier as string;
 
-		if (!verifier || typeof verifier !== "string") {
-			return {
-				success: false,
-				error: "Session verifier lost. Please try logging in again.",
-			};
-		}
+        if (!verifier || typeof verifier !== "string") {
+            return {
+                success: false,
+                error: "Session verifier lost. Please try logging in again.",
+            };
+        }
 
-		const token = await exchangeCodeForToken(
-			code,
-			MOBILE_REDIRECT_URI,
-			verifier,
-		);
-		await browser.storage.local.remove("oauth_verifier");
+        const token = await exchangeCodeForToken(
+            code,
+            MOBILE_REDIRECT_URI,
+            verifier,
+        );
+        await browser.storage.local.remove("oauth_verifier");
 
-		await fetchDiscordUser(true);
+        await fetchDiscordUser(true);
 
-		return { success: true, token };
-	} catch (e) {
-		logger.error("Mobile Exchange Error:", e);
-		await browser.storage.local.remove("oauth_verifier");
-		const message =
-			e instanceof Error ? e.message : "Failed to exchange authorization code.";
-		return { success: false, error: message };
-	}
+        return { success: true, token };
+    } catch (e) {
+        logger.error("Mobile Exchange Error:", e);
+        await browser.storage.local.remove("oauth_verifier");
+        const message =
+            e instanceof Error
+                ? e.message
+                : "Failed to exchange authorization code.";
+        return { success: false, error: message };
+    }
 }

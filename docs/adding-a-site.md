@@ -31,29 +31,31 @@ import type { AnimeSite } from "../../shared/types";
 import { getStandardVideoStats } from "../parser";
 
 export const mysiteStrategy: AnimeSite = {
-	domains: ["mysite.example"],
-	iframe_src: ["player.example"],
+    domains: ["mysite.example"],
+    iframe_src: ["player.example"],
 
-	getAnimeMetadata: () => {
-		const title = document.querySelector("h1.title")?.textContent?.trim();
-		const episode = document
-			.querySelector(".episode-label")
-			?.textContent?.trim();
-		const episodeName = document
-			.querySelector(".ep-list .active .name")
-			?.textContent?.trim();
-		const cover = document.querySelector<HTMLImageElement>(".poster img")?.src;
+    getAnimeMetadata: () => {
+        const title = document.querySelector("h1.title")?.textContent?.trim();
+        const episode = document
+            .querySelector(".episode-label")
+            ?.textContent?.trim();
+        const episodeName = document
+            .querySelector(".ep-list .active .name")
+            ?.textContent?.trim();
+        const cover =
+            document.querySelector<HTMLImageElement>(".poster img")?.src;
 
-		return {
-			title: title ?? null,
-			episode: episode ?? null,
-			// skip names that just repeat the episode label
-			episodeName: episodeName && episodeName !== episode ? episodeName : null,
-			coverUrl: cover ?? null,
-		};
-	},
+        return {
+            title: title ?? null,
+            episode: episode ?? null,
+            // skip names that just repeat the episode label
+            episodeName:
+                episodeName && episodeName !== episode ? episodeName : null,
+            coverUrl: cover ?? null,
+        };
+    },
 
-	getProgressStats: () => getStandardVideoStats(),
+    getProgressStats: () => getStandardVideoStats(),
 };
 ```
 

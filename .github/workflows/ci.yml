@@ -1,60 +1,60 @@
 name: CI
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+    push:
+        branches:
+            - main
+    pull_request:
 permissions:
-  contents: read
+    contents: read
 concurrency:
-  group: "${{ github.workflow }}-${{ github.ref }}"
-  cancel-in-progress: true
+    group: "${{ github.workflow }}-${{ github.ref }}"
+    cancel-in-progress: true
 jobs:
-  quality:
-    name: Lint and Typecheck
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.4.3
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-      - name: Biome Lint
-        run: bunx biome ci .
-      - name: Typecheck
-        run: bun run typecheck
-  build:
-    name: "Build Extension (${{ matrix.browser }})"
-    needs:
-      - quality
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        browser:
-          - chrome
-          - firefox
-          - edge
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.4.3
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-      - name: Build and Zip
-        run: "bun run zip:${{ matrix.browser }}"
-      - name: Prepare Artifacts
-        run: |
-          mkdir -p artifacts
-          mv .output/*.zip artifacts/
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: "anikehai-${{ matrix.browser }}-build"
-          path: artifacts/*.zip
+    quality:
+        name: Lint and Typecheck
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.4.3
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+            - name: Biome Lint
+              run: bunx biome ci .
+            - name: Typecheck
+              run: bun run typecheck
+    build:
+        name: "Build Extension (${{ matrix.browser }})"
+        needs:
+            - quality
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                browser:
+                    - chrome
+                    - firefox
+                    - edge
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.4.3
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+            - name: Build and Zip
+              run: "bun run zip:${{ matrix.browser }}"
+            - name: Prepare Artifacts
+              run: |
+                  mkdir -p artifacts
+                  mv .output/*.zip artifacts/
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: "anikehai-${{ matrix.browser }}-build"
+                  path: artifacts/*.zip

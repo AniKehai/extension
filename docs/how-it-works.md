@@ -22,19 +22,19 @@ The video usually lives in an iframe on another domain, and a script in the main
 ## What happens when you watch an episode
 
 1. **Content script.** It checks the hostname. A strategy's `domains` match means a site page (title, episode, cover). An `iframe_src` match means a player (video progress). An iframe is ignored unless its parent page is a supported site. Every 5 seconds (`CHECK_ACTIVITY_INTERVAL`) it sends:
-   - site page: `INFO_UPDATE` (title, episode, episode name, cover), or `STOPPED` when title or episode is missing;
-   - player: `TIME_UPDATE` (position, duration, paused).
+    - site page: `INFO_UPDATE` (title, episode, episode name, cover), or `STOPPED` when title or episode is missing;
+    - player: `TIME_UPDATE` (position, duration, paused).
 2. **Strategy.** Each site has a file in `src/scraper/sites/` implementing `AnimeSite`: `domains`, `iframe_src`, `getAnimeMetadata()` and `getProgressStats()`. Most use `getStandardVideoStats()` (`src/scraper/parser.ts`), which reads the `<video>` and falls back to JW Player's on-screen time.
 3. **Background.** It accepts messages **only from the active tab** and stores them in `currentAnimeState` (`src/core/state/playback.ts`). If updates stop for 10 seconds (`RESET_ACTIVITY_TIMEOUT`) it clears your status.
 4. **Should Discord update?** `evaluateDiscordUpdate()` says yes only when something meaningful changed. Discord draws the progress bar from timestamps, so we do not send the time continuously.
 
-   | Change                                               | Update? |
-   | ---------------------------------------------------- | ------- |
-   | Title, episode or cover changed                      | Yes     |
-   | Paused or resumed                                    | Yes     |
-   | Duration changed by more than 1 s                    | Yes     |
-   | Playback drifted more than 2.5 s (seek or buffering) | Yes     |
-   | Normal progress, or only the episode name changed    | No      |
+    | Change                                               | Update? |
+    | ---------------------------------------------------- | ------- |
+    | Title, episode or cover changed                      | Yes     |
+    | Paused or resumed                                    | Yes     |
+    | Duration changed by more than 1 s                    | Yes     |
+    | Playback drifted more than 2.5 s (seek or buffering) | Yes     |
+    | Normal progress, or only the episode name changed    | No      |
 
 5. **Discord.** `src/core/discord/gateway.ts` sends the presence over a WebSocket to `wss://gateway.discord.gg`. With Privacy on it sends "Anime / Private Session" instead of the real title.
 
