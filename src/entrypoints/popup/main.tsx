@@ -7,27 +7,27 @@ import { captureError, initSentry } from "@/utils/sentry";
 const rootElement = document.getElementById("root");
 
 if (!rootElement) {
-	throw new Error("Failed to mount popup root element.");
+    throw new Error("Failed to mount popup root element.");
 }
 
 initSentry("popup");
 
 window.addEventListener("error", (event) => {
-	captureError(event.error ?? new Error(event.message ?? "Unknown error"), {
-		entrypoint: "popup",
-		action: "uncaught_error",
-	});
+    captureError(event.error ?? new Error(event.message ?? "Unknown error"), {
+        entrypoint: "popup",
+        action: "uncaught_error",
+    });
 });
 
 window.addEventListener("unhandledrejection", (event) => {
-	captureError(event.reason, {
-		entrypoint: "popup",
-		action: "unhandled_rejection",
-	});
+    captureError(event.reason, {
+        entrypoint: "popup",
+        action: "unhandled_rejection",
+    });
 });
 
 ReactDOM.createRoot(rootElement).render(
-	<StrictMode>
-		<App />
-	</StrictMode>,
+    <StrictMode>
+        <App />
+    </StrictMode>,
 );

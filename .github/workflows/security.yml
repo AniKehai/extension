@@ -1,32 +1,32 @@
 name: Security Audit
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  schedule:
-    - cron: 0 0 * * 1
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+    schedule:
+        - cron: 0 0 * * 1
 permissions:
-  contents: read
+    contents: read
 jobs:
-  audit:
-    name: Vulnerability & Leak Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.4.3
-      - name: Dependency Audit
-        run: bun audit
-      - name: Run Gitleaks (Secret Scanning)
-        uses: gitleaks/gitleaks-action@v3
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          GITLEAKS_LICENSE: "${{ secrets.GITLEAKS_LICENSE }}"
+    audit:
+        name: Vulnerability & Leak Check
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.4.3
+            - name: Dependency Audit
+              run: bun audit
+            - name: Run Gitleaks (Secret Scanning)
+              uses: gitleaks/gitleaks-action@v3
+              env:
+                  GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+                  GITLEAKS_LICENSE: "${{ secrets.GITLEAKS_LICENSE }}"

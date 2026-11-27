@@ -1,21 +1,21 @@
 {
-	"version": "0.2.0",
-	"configurations": [
-		{
-			"name": "Start WXT Dev (Chrome)",
-			"type": "node",
-			"request": "launch",
-			"runtimeExecutable": "bun",
-			"runtimeArgs": ["run", "dev:chrome"],
-			"console": "integratedTerminal"
-		},
-		{
-			"name": "Start WXT Dev (Firefox)",
-			"type": "node",
-			"request": "launch",
-			"runtimeExecutable": "bun",
-			"runtimeArgs": ["run", "dev:firefox"],
-			"console": "integratedTerminal"
-		}
-	]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Start WXT Dev (Chrome)",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "bun",
+            "runtimeArgs": ["run", "dev:chrome"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Start WXT Dev (Firefox)",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "bun",
+            "runtimeArgs": ["run", "dev:firefox"],
+            "console": "integratedTerminal"
+        }
+    ]
 }

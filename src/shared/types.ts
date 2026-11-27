@@ -1,108 +1,108 @@
 export interface StoppedState {
-	type: "STOPPED";
+    type: "STOPPED";
 }
 
 export interface ActiveState {
-	type: "WATCHING" | "PAUSED";
-	title: string;
-	episode: string;
-	episodeName?: string;
-	coverUrl: string;
-	currentMs: number;
-	durationMs: number;
+    type: "WATCHING" | "PAUSED";
+    title: string;
+    episode: string;
+    episodeName?: string;
+    coverUrl: string;
+    currentMs: number;
+    durationMs: number;
 }
 
 export type PlaybackState = StoppedState | ActiveState;
 
 export type RuntimeMessage =
-	| { type: "GET_STATUS" }
-	| { type: "LOGIN_DISCORD" }
-	| { type: "LOGOUT_DISCORD" }
-	| { type: "SET_ACTIVITY_ENABLED"; enabled: boolean }
-	| { type: "SET_PRIVACY_ENABLED"; enabled: boolean }
-	| { type: "SET_RESET_ACTIVITY_TIMEOUT"; value: number }
-	| { type: "SET_CHECK_ACTIVITY_INTERVAL"; value: number }
-	| { type: "STOPPED" }
-	| { type: "FETCH_ANILIST"; anilistId: number }
-	| { type: "FETCH_ANILIST_BY_TITLE"; title: string }
-	| { type: "FETCH_DISCORD_USER" }
-	| {
-			type: "INFO_UPDATE";
-			title: string;
-			episode: string;
-			episodeName?: string | null;
-			coverUrl: string | null;
-	  }
-	| {
-			type: "TIME_UPDATE";
-			currentMs: number;
-			durationMs: number;
-			isPaused: boolean;
-	  };
+    | { type: "GET_STATUS" }
+    | { type: "LOGIN_DISCORD" }
+    | { type: "LOGOUT_DISCORD" }
+    | { type: "SET_ACTIVITY_ENABLED"; enabled: boolean }
+    | { type: "SET_PRIVACY_ENABLED"; enabled: boolean }
+    | { type: "SET_RESET_ACTIVITY_TIMEOUT"; value: number }
+    | { type: "SET_CHECK_ACTIVITY_INTERVAL"; value: number }
+    | { type: "STOPPED" }
+    | { type: "FETCH_ANILIST"; anilistId: number }
+    | { type: "FETCH_ANILIST_BY_TITLE"; title: string }
+    | { type: "FETCH_DISCORD_USER" }
+    | {
+          type: "INFO_UPDATE";
+          title: string;
+          episode: string;
+          episodeName?: string | null;
+          coverUrl: string | null;
+      }
+    | {
+          type: "TIME_UPDATE";
+          currentMs: number;
+          durationMs: number;
+          isPaused: boolean;
+      };
 
 export interface AnimeMetadata {
-	title: string | null | undefined;
-	episode: string | null | undefined;
-	episodeName?: string | null | undefined;
-	coverUrl: string | null | undefined;
+    title: string | null | undefined;
+    episode: string | null | undefined;
+    episodeName?: string | null | undefined;
+    coverUrl: string | null | undefined;
 }
 
 export interface ProgressStats {
-	currentMs: number | null | undefined;
-	durationMs: number | null | undefined;
-	isPaused: boolean | null | undefined;
+    currentMs: number | null | undefined;
+    durationMs: number | null | undefined;
+    isPaused: boolean | null | undefined;
 }
 
 export interface AnimeSite {
-	domains: string[];
-	iframe_src: string[];
-	getAnimeMetadata: () => AnimeMetadata;
-	getProgressStats: () => ProgressStats;
+    domains: string[];
+    iframe_src: string[];
+    getAnimeMetadata: () => AnimeMetadata;
+    getProgressStats: () => ProgressStats;
 }
 
 export interface AnimeState {
-	title: string;
-	episode: string;
-	episodeName?: string;
-	coverUrl: string;
-	isPaused: boolean;
-	currentMs: number;
-	durationMs: number;
+    title: string;
+    episode: string;
+    episodeName?: string;
+    coverUrl: string;
+    isPaused: boolean;
+    currentMs: number;
+    durationMs: number;
 }
 
 export type ViewName = "home" | "settings";
 
 export interface StatusResponse {
-	hasToken: boolean;
-	isGatewayReady: boolean;
-	activityEnabled?: boolean;
-	privacyEnabled?: boolean;
-	authError?: string | null;
-	currentAnime: AnimeState | null;
-	resetActivityTimeout?: number;
-	checkActivityInterval?: number;
+    hasToken: boolean;
+    isGatewayReady: boolean;
+    activityEnabled?: boolean;
+    privacyEnabled?: boolean;
+    authError?: string | null;
+    currentAnime: AnimeState | null;
+    resetActivityTimeout?: number;
+    checkActivityInterval?: number;
 }
 
 export interface LoginResponse {
-	status: "token" | "pending" | "failed";
-	error?: string;
+    status: "token" | "pending" | "failed";
+    error?: string;
 }
 
 export interface SimpleResponse {
-	success: boolean;
+    success: boolean;
 }
 
 export interface DiscordUser {
-	id: string;
-	username: string;
-	global_name?: string | null;
-	avatar?: string | null;
-	discriminator: string;
-	public_flags?: number;
-	flags?: number;
-	banner?: string | null;
-	accent_color?: number | null;
-	locale?: string;
-	mfa_enabled?: boolean;
-	premium_type?: number;
+    id: string;
+    username: string;
+    global_name?: string | null;
+    avatar?: string | null;
+    discriminator: string;
+    public_flags?: number;
+    flags?: number;
+    banner?: string | null;
+    accent_color?: number | null;
+    locale?: string;
+    mfa_enabled?: boolean;
+    premium_type?: number;
 }

@@ -1,78 +1,78 @@
 name: Sentry Release & Source Maps
 
 on:
-  push:
-    tags:
-      - v*.*.*
+    push:
+        tags:
+            - v*.*.*
 
 permissions:
-  contents: write
+    contents: write
 
 jobs:
-  release:
-    name: Upload Sentry Release & Source Maps
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.4.3
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-      - name: Validate Codebase
-        run: bun run validate
-      - name: Build extensions
-        run: |
-          bun run build:chrome
-          bun run build:firefox
-          bun run build:edge
-      - name: Extract version
-        id: version
-        run: |
-          VERSION=$(jq -r .version package.json)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-      - name: Create Sentry release
-        run: |
-          bunx @sentry/cli releases new "${{ steps.version.outputs.version }}" \
-            --org ${{ secrets.SENTRY_ORG }} \
-            --project ${{ secrets.SENTRY_PROJECT }}
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      - name: Upload source maps (chrome)
-        run: |
-          bunx @sentry/cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
-            --org ${{ secrets.SENTRY_ORG }} \
-            --project ${{ secrets.SENTRY_PROJECT }} \
-            --rewrite \
-            .output/chrome-mv3/
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      - name: Upload source maps (firefox)
-        run: |
-          bunx @sentry/cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
-            --org ${{ secrets.SENTRY_ORG }} \
-            --project ${{ secrets.SENTRY_PROJECT }} \
-            --rewrite \
-            .output/firefox-mv2/
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      - name: Upload source maps (edge)
-        run: |
-          bunx @sentry/cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
-            --org ${{ secrets.SENTRY_ORG }} \
-            --project ${{ secrets.SENTRY_PROJECT }} \
-            --rewrite \
-            .output/edge-mv3/
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      - name: Finalize Sentry release
-        run: |
-          bunx @sentry/cli releases finalize "${{ steps.version.outputs.version }}" \
-            --org ${{ secrets.SENTRY_ORG }} \
-            --project ${{ secrets.SENTRY_PROJECT }}
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    release:
+        name: Upload Sentry Release & Source Maps
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.4.3
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+            - name: Validate Codebase
+              run: bun run validate
+            - name: Build extensions
+              run: |
+                  bun run build:chrome
+                  bun run build:firefox
+                  bun run build:edge
+            - name: Extract version
+              id: version
+              run: |
+                  VERSION=$(jq -r .version package.json)
+                  echo "version=$VERSION" >> $GITHUB_OUTPUT
+            - name: Create Sentry release
+              run: |
+                  bunx @sentry/cli releases new "${{ steps.version.outputs.version }}" \
+                    --org ${{ secrets.SENTRY_ORG }} \
+                    --project ${{ secrets.SENTRY_PROJECT }}
+              env:
+                  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+            - name: Upload source maps (chrome)
+              run: |
+                  bunx @sentry/cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
+                    --org ${{ secrets.SENTRY_ORG }} \
+                    --project ${{ secrets.SENTRY_PROJECT }} \
+                    --rewrite \
+                    .output/chrome-mv3/
+              env:
+                  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+            - name: Upload source maps (firefox)
+              run: |
+                  bunx @sentry/cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
+                    --org ${{ secrets.SENTRY_ORG }} \
+                    --project ${{ secrets.SENTRY_PROJECT }} \
+                    --rewrite \
+                    .output/firefox-mv2/
+              env:
+                  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+            - name: Upload source maps (edge)
+              run: |
+                  bunx @sentry/cli releases files "${{ steps.version.outputs.version }}" upload-sourcemaps \
+                    --org ${{ secrets.SENTRY_ORG }} \
+                    --project ${{ secrets.SENTRY_PROJECT }} \
+                    --rewrite \
+                    .output/edge-mv3/
+              env:
+                  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+            - name: Finalize Sentry release
+              run: |
+                  bunx @sentry/cli releases finalize "${{ steps.version.outputs.version }}" \
+                    --org ${{ secrets.SENTRY_ORG }} \
+                    --project ${{ secrets.SENTRY_PROJECT }}
+              env:
+                  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
